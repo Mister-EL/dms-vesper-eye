@@ -1,3 +1,9 @@
+# 0.1.1 — responsive gaze
+
+- Frame-synchronized gaze interpolation instead of the 33 ms Eco timer.
+- 60 Hz cursor sampling during motion; 80–100 ms idle detection, unchanged DPMS suspension.
+- Eye size is a per-instance desktop setting, independent of eyelid geometry.
+
 # Changelog
 
 ## 0.1.0 — 2026-09-06 (preview)

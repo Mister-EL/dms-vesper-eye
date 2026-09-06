@@ -20,7 +20,7 @@ Item {
             behavior.active = false; behavior.reducedMotion = false; behavior.idle = false;
             behavior.lastNotification = 0; behavior.lastSurprise = 0;
             behavior.active = true; behavior.eco = true;
-            gaze.active = false; gaze.reducedMotion = false; gaze.active = true;
+            gaze.active = false; gaze.reducedMotion = false; gaze.eco = true; gaze.active = true;
         }
         function cleanup() { behavior.active = false; gaze.active = false; }
         function test_hold_and_release() {
@@ -71,6 +71,15 @@ Item {
             tryCompare(gaze,'moving',false,1600);
             verify(Math.abs(gaze.irisX-gaze.targetX)<0.025);
             gaze.active=false;compare(gaze.irisX,0);compare(gaze.pupilX,0);
+        }
+        function test_eco_gaze_tracks_without_timer_steps() {
+            gaze.limit = 80; gaze.point(60, 0);
+            wait(120); verify(gaze.irisX > 45, "Eco gaze is still delayed");
+            gaze.point(-60, 0); wait(180);
+            verify(gaze.irisX < -50, "Direction reversal stalls");
+            tryCompare(gaze, "moving", false, 1600);
+            const stopped = gaze.irisX; wait(120); compare(gaze.irisX, stopped);
+            gaze.active = false; compare(gaze.irisX, 0);
         }
         function test_eye_hit_area() {
             verify(eye.containsPoint(500,263));verify(!eye.containsPoint(500,20));verify(!eye.containsPoint(5,100));

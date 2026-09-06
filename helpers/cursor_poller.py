@@ -91,9 +91,9 @@ def main():
         if not awake or args.no_cursor:
             time.sleep(0.5)  # monitor status only; no cursor queries while DPMS is off
         elif args.eco:
-            time.sleep(0.10 if now - last_move < 2 else 0.4)
+            time.sleep(1 / 60 if now - last_move < 0.75 else 0.10)
         else:
-            time.sleep(0.05 if now - last_move < 2 else 0.2)
+            time.sleep(1 / 60 if now - last_move < 0.75 else 0.08)
     return 0
 
 
