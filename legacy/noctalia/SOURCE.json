@@ -1,0 +1,28 @@
+{
+  "source_project": "noctalia-dev/noctalia (formerly noctalia-shell)",
+  "upstream_base": "01632084",
+  "captured": "2026-09-06",
+  "status": "Unmodified owner-maintained Noctalia eye sources. Reference only; not DMS-compatible.",
+  "files": [
+    {
+      "path": "legacy/noctalia/Modules/DesktopWidgets/Widgets/DesktopEye.qml",
+      "sha256": "e0e60dfe313cf5c09b886ff49cc607961f4c3bbf2e5528cb846432531614f853",
+      "bytes": 34654
+    },
+    {
+      "path": "legacy/noctalia/Bin/eye-cursor-poller.py",
+      "sha256": "44bc397aae165dfd642fa3bb7c36360d8ec7458fc649f474bf9b365903845760",
+      "bytes": 2273
+    },
+    {
+      "path": "legacy/noctalia/Shaders/frag/desktop_eye.frag",
+      "sha256": "7411d98b80dbdfa71a3e7de55b40a853be1ae6f5833a250d9f4cf2dabd367c20",
+      "bytes": 4355
+    },
+    {
+      "path": "legacy/noctalia/Shaders/qsb/desktop_eye.frag.qsb",
+      "sha256": "b5f698f47a4a12b6049052e7a6cf24cf80ce7a822f05b1e8ffa67d667d31cbe9",
+      "bytes": 5386
+    }
+  ]
+}

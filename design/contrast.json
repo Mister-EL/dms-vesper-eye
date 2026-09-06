@@ -1,0 +1,38 @@
+[
+  {
+    "foreground": "text",
+    "background": "background",
+    "contrast_ratio": 14.62,
+    "normal_text_AA": true
+  },
+  {
+    "foreground": "text",
+    "background": "surface",
+    "contrast_ratio": 13.78,
+    "normal_text_AA": true
+  },
+  {
+    "foreground": "textMuted",
+    "background": "surface",
+    "contrast_ratio": 7.98,
+    "normal_text_AA": true
+  },
+  {
+    "foreground": "primary",
+    "background": "surface",
+    "contrast_ratio": 5.24,
+    "normal_text_AA": true
+  },
+  {
+    "foreground": "onPrimaryContainer",
+    "background": "primaryContainer",
+    "contrast_ratio": 8.34,
+    "normal_text_AA": true
+  },
+  {
+    "foreground": "secondary",
+    "background": "surface",
+    "contrast_ratio": 7.79,
+    "normal_text_AA": true
+  }
+]

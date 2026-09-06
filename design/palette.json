@@ -1,0 +1,35 @@
+{
+  "name": "Sanguine Ivory",
+  "version": 1,
+  "status": "design proposal, not installed theme",
+  "tokens": {
+    "background": "#0D0B10",
+    "surface": "#17121A",
+    "elevated": "#241B26",
+    "border": "#574650",
+    "text": "#E8DDCF",
+    "textMuted": "#B6A6B1",
+    "primary": "#CC6B7C",
+    "primaryContainer": "#75263D",
+    "onPrimaryContainer": "#F6E8DF",
+    "secondary": "#C6A36D",
+    "success": "#83AAA1",
+    "warning": "#D8AD68",
+    "error": "#EE8792",
+    "eyeSclera": "#C1B4A5",
+    "eyeIris": "#A44B60",
+    "eyePupil": "#08070B"
+  },
+  "usage": {
+    "primary": "focus and selected controls; small accents",
+    "primaryContainer": "selected backgrounds and action button fill",
+    "secondary": "sparse decorative lines; not ordinary body text everywhere",
+    "text": "normal readable UI; no gothic body font",
+    "success": "status only; not a competing dominant green"
+  },
+  "fonts": {
+    "interface": "Adwaita Sans (existing), optionally Inter after review",
+    "monospace": "JetBrains Mono Nerd Font",
+    "display": "Cormorant Garamond, optional headings only; not required by plugin"
+  }
+}
