@@ -1,0 +1,14 @@
+{
+  "id": "vesperEye",
+  "name": "Vesper Eye",
+  "description": "A quiet gothic eye with independent eyelids, cursor tracking and optional system reactions.",
+  "version": "0.1.0",
+  "author": "Mister-EL",
+  "type": "desktop",
+  "capabilities": ["desktop-widget"],
+  "component": "./VesperEye.qml",
+  "settings": "./Settings.qml",
+  "icon": "visibility",
+  "requires_dms": ">=1.6.0",
+  "permissions": ["settings_read", "settings_write"]
+}

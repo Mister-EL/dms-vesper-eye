@@ -1,6 +1,6 @@
 # Архитектура и границы совместимости
 
-## Целевая структура после реализации
+## Структура первого runtime-порта
 
 ```text
 plugin.json
@@ -9,14 +9,14 @@ Settings.qml
 components/EyeRenderer.qml
 components/GazeController.qml
 components/BehaviorController.qml
-adapters/HostAdapter.qml
-helpers/cursor_poller.py   # только если нет подходящего host API
+components/CursorBackend.qml
+helpers/cursor_poller.py   # read-only Unix socket, один helper на экземпляр
 shaders/eye.frag
 shaders/eye.frag.qsb
 design/palette.json
 ```
 
-Это план структуры, не список уже реализованных файлов.
+Перечисленные runtime-файлы реализованы. Host-адаптеры уведомлений, темы, lock и CAVA находятся в VesperEye.qml. Подтверждённые сценарии и ограничения перечислены в VALIDATION.md.
 
 DMS v1.6.0 содержит `DesktopPluginComponent` (qs.Modules.Plugins), instanceData/pluginData и wrapper-owned размер/позицию. Документированный пример задаёт type=desktop, capabilities, component, settings и requires_dms. Использовать фактический код release и examples: часть guide ещё описывает более простой plain Item. Не смешивать оба подхода без проверки.
 
