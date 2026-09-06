@@ -2,9 +2,9 @@
 <html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Vesper Eye · Sanguine Ivory</title>
 <style>
-:root{color-scheme:dark;--bg:#0D0B10;--surface:#17121A;--raised:#241B26;--text:#E8DDCF;--muted:#B6A6B1;--accent:#CC6B7C;--blood:#75263D;--gold:#C6A36D;--line:#574650}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:clamp(16px,4vw,44px)}.kicker{color:var(--gold);font-size:11px;letter-spacing:.22em;text-transform:uppercase}h1{font:clamp(32px,6vw,58px)/1.1 Georgia,serif;margin:12px 0}h2{font:26px Georgia,serif;margin:0 0 12px}p{color:var(--muted);max-width:74ch}.sub{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}.tag{font-size:11px;padding:6px 10px;border:1px solid var(--line);border-radius:20px;color:var(--muted)}.scene{margin-top:24px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#28141e 0%,#141017 52%,#100c13 90%)}.bar{display:flex;justify-content:space-between;gap:10px;padding:13px 20px;background:#17121aed;border-bottom:1px solid #57465077;color:var(--muted);font-size:12px}.bar strong{color:var(--gold);letter-spacing:.12em}.stage{position:relative;min-height:270px;display:grid;place-items:center;padding:20px}.stage:before,.stage:after{content:"";position:absolute;inset:20px;border:1px solid #C6A36D22;pointer-events:none}.stage:after{inset:26px;border-color:#C6A36D0e}.eye{width:min(100%,660px);height:auto;filter:drop-shadow(0 12px 28px #0008)}.hud{position:absolute;bottom:16px;left:20px;font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}.eye-body{transform-origin:360px 185px;transition:transform .45s ease}.sleep .eye-body{transform:scaleY(.34)}.blink .eye-body{animation:blink .38s ease-in-out}@keyframes blink{0%,100%{transform:scaleY(1)}35%{transform:scaleY(.025)}55%{transform:scaleY(.025)}}.controls{display:flex;gap:9px;flex-wrap:wrap;padding:16px 20px;border-top:1px solid #57465077;background:#17121ad9}button{font:inherit;cursor:pointer;color:var(--text);background:var(--raised);border:1px solid var(--line);border-radius:8px;padding:8px 13px}button:hover,button:focus-visible{border-color:var(--accent);outline:2px solid transparent}button[aria-pressed=true]{background:var(--blood);color:#F6E8DF;border-color:var(--accent)}.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;margin-top:26px}.card{background:var(--surface);border:1px solid #57465088;padding:22px;border-radius:14px}.swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.swatch i{display:block;height:47px;border-radius:7px;border:1px solid #ffffff1a}.swatch b{display:block;margin-top:7px;font-size:11px;font-weight:500}.swatch code{font:10px monospace;color:var(--muted)}.row{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #57465055;padding:12px 0;color:var(--muted);font-size:13px}.row strong{font-weight:500;color:var(--text)}.note{margin-top:22px;font-size:12px;color:var(--muted)}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px}.states{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.thin{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4;margin:20px 0}.status{color:var(--gold);font-size:12px}@media(max-width:700px){.grid{grid-template-columns:1fr}.bar span:nth-child(2){display:none}.swatches{grid-template-columns:repeat(4,1fr)}.stage{min-height:220px}}@media(prefers-reduced-motion:reduce){.eye-body{transition:none}.blink .eye-body{animation:none}}
+:root{color-scheme:dark;--bg:#0D0B10;--surface:#17121A;--raised:#241B26;--text:#E8DDCF;--muted:#B6A6B1;--accent:#CC6B7C;--blood:#75263D;--gold:#C6A36D;--line:#574650}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.55 system-ui,sans-serif}main{max-width:1100px;margin:auto;padding:clamp(16px,4vw,44px)}.kicker{color:var(--gold);font-size:11px;letter-spacing:.22em;text-transform:uppercase}h1{font:clamp(32px,6vw,58px)/1.1 Georgia,serif;margin:12px 0}h2{font:26px Georgia,serif;margin:0 0 12px}p{color:var(--muted);max-width:74ch}.sub{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between}.tag{font-size:11px;padding:6px 10px;border:1px solid var(--line);border-radius:20px;color:var(--muted)}.scene{margin-top:24px;border:1px solid var(--line);border-radius:18px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#28141e 0%,#141017 52%,#100c13 90%)}.bar{display:flex;justify-content:space-between;gap:10px;padding:13px 20px;background:#17121aed;border-bottom:1px solid #57465077;color:var(--muted);font-size:12px}.bar strong{color:var(--gold);letter-spacing:.12em}.stage{position:relative;min-height:270px;display:grid;place-items:center;padding:20px}.stage:before,.stage:after{content:"";position:absolute;inset:20px;border:1px solid #C6A36D22;pointer-events:none}.stage:after{inset:26px;border-color:#C6A36D0e}.eye{width:min(100%,660px);height:auto;filter:drop-shadow(0 12px 28px #0008)}.hud{position:absolute;bottom:16px;left:20px;font-size:10px;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}.eye-body{isolation:isolate}.eye{touch-action:none;user-select:none}.demo-notice{position:absolute;right:38px;top:32px;max-width:48%;padding:8px 12px;background:#241B26;border:1px solid #574650;border-radius:8px;font-size:11px;color:#E8DDCF;pointer-events:none}.demo-notice[hidden]{display:none}.controls{display:flex;gap:9px;flex-wrap:wrap;padding:16px 20px;border-top:1px solid #57465077;background:#17121ad9}button{font:inherit;cursor:pointer;color:var(--text);background:var(--raised);border:1px solid var(--line);border-radius:8px;padding:8px 13px}button:hover,button:focus-visible{border-color:var(--accent);outline:2px solid transparent}button[aria-pressed=true]{background:var(--blood);color:#F6E8DF;border-color:var(--accent)}.grid{display:grid;grid-template-columns:1.1fr 1fr;gap:24px;margin-top:26px}.card{background:var(--surface);border:1px solid #57465088;padding:22px;border-radius:14px}.swatches{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.swatch i{display:block;height:47px;border-radius:7px;border:1px solid #ffffff1a}.swatch b{display:block;margin-top:7px;font-size:11px;font-weight:500}.swatch code{font:10px monospace;color:var(--muted)}.row{display:flex;justify-content:space-between;gap:14px;border-top:1px solid #57465055;padding:12px 0;color:var(--muted);font-size:13px}.row strong{font-weight:500;color:var(--text)}.note{margin-top:22px;font-size:12px;color:var(--muted)}.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px}.states{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.thin{height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);opacity:.4;margin:20px 0}.status{color:var(--gold);font-size:12px}@media(max-width:700px){.grid{grid-template-columns:1fr}.bar span:nth-child(2){display:none}.swatches{grid-template-columns:repeat(4,1fr)}.stage{min-height:220px}}
 </style>
-<main><div class="sub"><div class="kicker">Vesper / palette study 01</div><span class="tag">Интерактивный концепт · не установленная система</span></div>
+<main><div class="sub"><div class="kicker">Vesper / eye study 02 · отдельные веки</div><span class="tag">Интерактивный концепт · не установленная система</span></div>
 <h1>Sanguine Ivory</h1><p>Винный бархат, костяной свет и потемневшая латунь. Готический нуар без красного шума: цвет появляется там, где есть внимание.</p>
 <div class="scene"><div class="bar"><strong>VESPER</strong><span>Ⅰ &nbsp; Ⅱ &nbsp; Ⅲ &nbsp; · &nbsp; спокойная рабочая среда</span><span>RU / EN &nbsp; · &nbsp; NIGHT</span></div>
 <div class="stage" id="stage"><svg class="eye" id="eye" viewBox="0 0 720 370" role="img" aria-label="Концепт готического глаза: гранатовая радужка, костяная склера, мягкое движение взгляда"><defs>
@@ -16,23 +16,149 @@
 </defs><path d="M40 186h20 M660 186h20 M360 57v-17 M360 311v18" stroke="#C6A36D" opacity=".4"/>
 <g class="eye-body"><path d="M62 187 Q350 6 658 187 Q359 360 62 187Z" fill="url(#lid)" stroke="#C6A36D" stroke-opacity=".52" stroke-width="1.1"/>
 <g clip-path="url(#aperture)"><path d="M66 187 Q350 20 654 187 Q359 347 66 187Z" fill="url(#sclera)"/>
-<g id="gaze"><circle cx="360" cy="185" r="82" fill="url(#iris)" stroke="#25111D" stroke-width="5"/><g id="fibers" stroke="#E4AD91" stroke-opacity=".16" stroke-width="1"/>
-<circle cx="360" cy="185" r="41" fill="#08070B"/><circle cx="360" cy="185" r="43" fill="none" stroke="#C6A36D" stroke-opacity=".35" stroke-width="1.5"/><ellipse cx="341" cy="160" rx="9" ry="6" fill="#F6E8DF" opacity=".6"/><circle cx="383" cy="205" r="3" fill="#F6E8DF" opacity=".22"/></g>
-<path d="M66 185 Q350 16 654 185 L654 243 Q360 76 66 243Z" fill="url(#shadow)"/>
-</g><path d="M66 187 Q350 20 654 187" fill="none" stroke="#CC6B7C" stroke-width="1.6" stroke-opacity=".48"/><path d="M66 190 Q359 347 654 190" fill="none" stroke="#C6A36D" stroke-width=".8" stroke-opacity=".35"/></g></svg><div class="hud" id="state">Состояние: внимание</div></div>
-<div class="controls"><button id="attentive" aria-pressed="true">Внимание</button><button id="sleep" aria-pressed="false">Дремота</button><button id="blink">Моргнуть</button><span class="status" id="motion" aria-live="polite">Двигайте указатель над глазом</span></div></div>
+<g id="gaze"><circle id="iris-disc" cx="360" cy="185" r="82" fill="url(#iris)" stroke="#25111D" stroke-width="5"/><g id="fibers" stroke="#E4AD91" stroke-opacity=".16" stroke-width="1"/>
+<g id="pupil"><circle id="pupil-disc" cx="360" cy="185" r="41" fill="#08070B"/><circle id="pupil-ring" cx="360" cy="185" r="43" fill="none" stroke="#C6A36D" stroke-opacity=".35" stroke-width="1.5"/></g><ellipse cx="341" cy="160" rx="9" ry="6" fill="#F6E8DF" opacity=".6"/><circle cx="383" cy="205" r="3" fill="#F6E8DF" opacity=".22"/></g>
+<path id="lid-shadow" d="M66 187 Q350 20 654 187 L654 199 Q350 44 66 199Z" fill="url(#shadow)"/>
+<path id="upper-lid" d="M66 187 Q350 20 654 187 Q350 20 66 187Z" fill="url(#lid)"/>
+<path id="lower-lid" d="M66 187 Q359 347 654 187 Q359 347 66 187Z" fill="url(#lid)"/>
+<path id="upper-rim" d="M66 187 Q350 20 654 187" fill="none" stroke="#CC6B7C" stroke-width="1.6" stroke-opacity=".48"/>
+<path id="lower-rim" d="M66 187 Q359 347 654 187" fill="none" stroke="#C6A36D" stroke-width=".8" stroke-opacity=".35"/>
+</g></g></svg><div id="notice" class="demo-notice" hidden>Пример уведомления · без чтения системы</div><div class="hud" id="state">Состояние: внимание</div></div>
+<div class="controls"><button id="attentive" aria-pressed="true">Внимание</button><button id="sleep" aria-pressed="false">Дремота</button><button id="blink">Моргнуть</button><button id="notify">Уведомление · демо</button><button id="music">Музыка · демо</button><button id="auto" aria-pressed="true">Автоморгание</button><span class="status" id="motion" aria-live="polite">Удерживайте глаз — веки закроются. Двойной клик — удивление.</span></div></div>
 <div class="grid"><section class="card"><h2>Палитра</h2><div class="swatches" id="swatches"></div><div class="thin"></div><p style="font-size:12px;margin:0">Винный — фокус и выбранные действия. Латунь — редкая отделка. Зелёный остаётся только служебным цветом успеха, не основой темы.</p></section>
 <section class="card"><h2>Характер, а не суета</h2><div class="row"><strong>Взгляд</strong><span>Мягкое затухание, без дрожи</span></div><div class="row"><strong>Моргание</strong><span>Быстро закрыть, мягко открыть</span></div><div class="row"><strong>Система</strong><span>Редкие реакции, без вспышек</span></div><div class="row"><strong>В покое</strong><span>Нет постоянного кадрового цикла</span></div><div class="row"><strong>Отключённый экран</strong><span>Плагин должен спать</span></div></section></div>
-<p class="note"><span class="dot"></span>Это браузерный эскиз палитры и характера. Он не демонстрирует готовый DMS-порт, реальную нагрузку плагина или уже применённые настройки. В концепте нет внешних ресурсов, сетевых запросов и постоянного animation loop.</p>
+<p class="note"><span class="dot"></span>Это браузерный эскиз палитры и характера. Удержание мыши закрывает веки; двойной клик вызывает удивление; после 10 секунд без движения — дремота. Уведомление и музыка здесь только имитируются кнопками. Глобальный курсор, CAVA, блокировка и DMS пока не подключены. Эскиз не доказывает реальную нагрузку плагина. В концепте нет внешних ресурсов, сетевых запросов и постоянного animation loop.</p>
 </main><script>
 const colors=[['Фон','#0D0B10'],['Поверхность','#17121A'],['Подъём','#241B26'],['Текст','#E8DDCF'],['Приглушённый','#B6A6B1'],['Акцент','#CC6B7C'],['Винный','#75263D'],['Латунь','#C6A36D']];
 const sw=document.getElementById('swatches');for(const [name,value] of colors){const el=document.createElement('div');el.className='swatch';const i=document.createElement('i');i.style.background=value;const label=document.createElement('b');label.textContent=name;const code=document.createElement('code');code.textContent=value;el.append(i,label,code);sw.append(el)}
 const f=document.getElementById('fibers');for(let i=0;i<48;i++){const a=i*Math.PI/24;const line=document.createElementNS('http://www.w3.org/2000/svg','path');const r=48+(i%5);line.setAttribute('d',`M${360+Math.cos(a)*r} ${185+Math.sin(a)*r} Q${360+Math.cos(a+.02)*66} ${185+Math.sin(a+.02)*66} ${360+Math.cos(a+.03)*78} ${185+Math.sin(a+.03)*78}`);f.append(line)}
-const stage=document.getElementById('stage'),eye=document.getElementById('eye'),gaze=document.getElementById('gaze'),reduced=matchMedia('(prefers-reduced-motion: reduce)');let x=0,y=0,tx=0,ty=0,raf=0,last=0,sleeping=false,blinkTimer=0;
-function tick(now){const dt=last?Math.min(50,now-last):16;last=now;const a=1-Math.exp(-dt/95);x+=(tx-x)*a;y+=(ty-y)*a;gaze.setAttribute('transform',`translate(${x.toFixed(2)} ${y.toFixed(2)})`);if(Math.abs(tx-x)+Math.abs(ty-y)>.035&&!document.hidden&&!reduced.matches)raf=requestAnimationFrame(tick);else{raf=0;last=0}}
-function go(a,b){tx=a;ty=b;if(reduced.matches){x=a;y=b;gaze.setAttribute('transform',`translate(${x} ${y})`);return}if(!raf&&!document.hidden)raf=requestAnimationFrame(tick)}
-stage.addEventListener('pointermove',e=>{if(sleeping)return;const r=stage.getBoundingClientRect();go(Math.max(-44,Math.min(44,(e.clientX-r.left-r.width/2)/r.width*80)),Math.max(-17,Math.min(17,(e.clientY-r.top-r.height/2)/r.height*32)))});stage.addEventListener('pointerleave',()=>go(0,0));
-function mode(s){sleeping=s;eye.classList.remove('blink');eye.classList.toggle('sleep',s);document.getElementById('attentive').setAttribute('aria-pressed',String(!s));document.getElementById('sleep').setAttribute('aria-pressed',String(s));document.getElementById('state').textContent='Состояние: '+(s?'дремота':'внимание');document.getElementById('motion').textContent=s?'Спокойный режим':'Двигайте указатель над глазом';go(0,0)}
-document.getElementById('sleep').onclick=()=>mode(true);document.getElementById('attentive').onclick=()=>mode(false);document.getElementById('blink').onclick=()=>{if(reduced.matches)return;clearTimeout(blinkTimer);eye.classList.remove('blink');void eye.getBoundingClientRect();eye.classList.add('blink');blinkTimer=setTimeout(()=>eye.classList.remove('blink'),420)};
-document.addEventListener('visibilitychange',()=>{if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;clearTimeout(blinkTimer);eye.classList.remove('blink')}});
+const $=id=>document.getElementById(id);
+const stage=$('stage'),eye=$('eye'),gaze=$('gaze'),reduced=matchMedia('(prefers-reduced-motion: reduce)');
+// The eye silhouette and iris are never scaled by eyelid movement.
+const pose={x:0,y:0,px:0,py:0,top:0,bottom:0,pupil:1,iris:1};
+const tweens=new Map(),timers=new Map();
+let raf=0,sleeping=false,held=false,blinking=false,reading=false,auto=true,surprised=false;
+let pointer={x:0,y:0},lastPointer=null,lastSurprise=-Infinity;
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+function render(){
+  gaze.setAttribute('transform',`translate(${pose.x} ${pose.y})`);
+  $('pupil').setAttribute('transform',`translate(${pose.px} ${pose.py})`);
+  $('pupil-disc').setAttribute('r',41*pose.pupil);
+  $('pupil-ring').setAttribute('r',41*pose.pupil+2);
+  // Music changes iris radius isotropically, never eye dimensions.
+  $('iris-disc').setAttribute('r',82*pose.iris);
+  const top=20+167*clamp(pose.top,0,1),bottom=347-160*clamp(pose.bottom,0,1);
+  $('upper-lid').setAttribute('d',`M66 187 Q350 20 654 187 Q350 ${top} 66 187Z`);
+  $('lower-lid').setAttribute('d',`M66 187 Q359 347 654 187 Q359 ${bottom} 66 187Z`);
+  $('upper-rim').setAttribute('d',`M66 187 Q350 ${top} 654 187`);
+  $('lower-rim').setAttribute('d',`M66 187 Q359 ${bottom} 654 187`);
+  $('lid-shadow').setAttribute('d',`M66 187 Q350 ${top} 654 187 L654 199 Q350 ${top+24} 66 199Z`);
+}
+function frame(now){
+  raf=0;
+  for(const [key,t] of tweens){
+    const p=clamp((now-t.start)/t.duration,0,1);
+    const eased=t.soft?(1-Math.cos(Math.PI*p))/2:1-Math.pow(1-p,3);
+    pose[key]=t.from+(t.to-t.from)*eased;
+    if(p===1)tweens.delete(key);
+  }
+  render();
+  if(tweens.size&&!document.hidden&&!reduced.matches)raf=requestAnimationFrame(frame);
+}
+function animate(target,duration=240,soft=false){
+  for(const [key,to] of Object.entries(target)){
+    if(reduced.matches||document.hidden||duration===0){pose[key]=to;tweens.delete(key)}
+    else if(Math.abs(pose[key]-to)>.0001)tweens.set(key,{from:pose[key],to,start:performance.now(),duration,soft});
+    else tweens.delete(key);
+  }
+  render();
+  if(tweens.size&&!raf&&!document.hidden&&!reduced.matches)raf=requestAnimationFrame(frame);
+}
+function stopTimer(key){clearTimeout(timers.get(key));timers.delete(key)}
+function later(key,fn,ms){stopTimer(key);if(document.hidden)return;timers.set(key,setTimeout(()=>{timers.delete(key);fn()},ms))}
+function stopSequence(){
+  for(const key of ['blinkOpen','blinkEnd','secondBlink','wake','read1','read2','readEnd','surprise','music1','music2','music3','pupilReset'])stopTimer(key);
+  blinking=reading=surprised=false;
+  $('notice').hidden=true;
+  animate({pupil:1,iris:1});
+}
+function label(text){$('state').textContent='Состояние: '+text}
+function restLids(duration=210){animate({top:held?1:sleeping?1:0,bottom:held?1:0},duration)}
+function look(x,y){animate({x,y},190);animate({px:x*.06,py:y*.06},250)}
+function follow(){look(pointer.x,pointer.y)}
+function scheduleIdle(){later('idle',()=>mode(true),10000)}
+function scheduleBlink(){
+  stopTimer('autoBlink');
+  if(!auto||reduced.matches||document.hidden)return;
+  later('autoBlink',()=>{if(!held&&!reading&&!surprised&&!blinking)blink(Math.random()<.2);scheduleBlink()},4000+Math.random()*5000);
+}
+function mode(s,wake=true){
+  const wasSleeping=sleeping;
+  held=false;stopSequence();sleeping=s;
+  $('sleep').setAttribute('aria-pressed',String(s));$('attentive').setAttribute('aria-pressed',String(!s));
+  label(s?'дремота':'внимание');restLids(s?1100:420);look(0,0);
+  stopTimer('idle');
+  if(!s){scheduleIdle();if(wasSleeping&&wake&&!reduced.matches)later('wake',()=>blink(true),450)}
+}
+function blink(double=false){
+  if(held||reduced.matches||document.hidden||reading||surprised)return;
+  for(const key of ['blinkOpen','blinkEnd','secondBlink'])stopTimer(key);
+  blinking=true;animate({top:1,bottom:1},95);
+  later('blinkOpen',()=>restLids(175),125);
+  later('blinkEnd',()=>{blinking=false;if(double)later('secondBlink',()=>blink(false),145)},310);
+}
+function press(){
+  mode(false,false);held=true;label('глаз закрыт — удержание');animate({top:1,bottom:1,pupil:.95},190);
+}
+function release(){
+  if(!held)return;held=false;restLids(210);animate({pupil:1.02},220);
+  later('pupilReset',()=>animate({pupil:1},220),250);label('внимание');scheduleIdle();
+}
+function surprise(){
+  if(reduced.matches||performance.now()-lastSurprise<2000)return;
+  lastSurprise=performance.now();mode(false,false);surprised=true;
+  label('удивление');animate({pupil:1.3,top:0,bottom:0},150);
+  later('surprise',()=>{surprised=false;animate({pupil:1},350);label('внимание')},550);
+}
+stage.addEventListener('pointermove',e=>{
+  const r=stage.getBoundingClientRect(),now=performance.now();
+  pointer={x:clamp((e.clientX-r.left-r.width/2)/r.width*80,-44,44),y:clamp((e.clientY-r.top-r.height/2)/r.height*32,-17,17)};
+  if(sleeping)mode(false);
+  scheduleIdle();if(held||reading||surprised)return;
+  follow();
+  if(lastPointer){const speed=Math.hypot(e.clientX-lastPointer.x,e.clientY-lastPointer.y)/Math.max(16,now-lastPointer.t);animate({pupil:1-.075*clamp(speed/2,0,1)},200);later('pupilReset',()=>animate({pupil:1},220),250)}
+  lastPointer={x:e.clientX,y:e.clientY,t:now};
+});
+stage.addEventListener('pointerleave',()=>{pointer={x:0,y:0};lastPointer=null;if(!reading&&!held)follow()});
+function onEye(e){const p=new DOMPoint(e.clientX,e.clientY).matrixTransform(eye.getScreenCTM().inverse());const n=(p.x-360)/294;return Math.abs(n)<=1&&Math.abs(p.y-187)<=85*(1-n*n)}
+eye.addEventListener('pointerdown',e=>{if(e.button!==0||!onEye(e))return;e.preventDefault();eye.setPointerCapture(e.pointerId);press()});
+for(const event of ['pointerup','pointercancel','lostpointercapture'])eye.addEventListener(event,release);
+eye.addEventListener('dblclick',e=>{if(onEye(e))surprise()});
+$('sleep').onclick=()=>mode(true);$('attentive').onclick=()=>mode(false);
+$('blink').onclick=()=>{stopSequence();restLids();blink();scheduleIdle()};
+$('notify').onclick=()=>{
+  mode(false,false);reading=true;$('notice').hidden=false;label('взгляд на уведомление · имитация');look(42,-17);
+  later('read1',()=>look(31,-18),450);later('read2',()=>look(44,-16),1050);
+  later('readEnd',()=>{reading=false;$('notice').hidden=true;follow();label('внимание')},2000);
+};
+$('music').onclick=()=>{
+  mode(false,false);label('музыка · короткая имитация');
+  if(reduced.matches){label('музыка выключена · уменьшение движения');return}
+  animate({iris:1.045,pupil:1.035},300,true);
+  later('music1',()=>animate({iris:1,pupil:1},350,true),310);
+  later('music2',()=>animate({iris:1.06,pupil:1.045},280,true),680);
+  later('music3',()=>{animate({iris:1,pupil:1},450,true);label('внимание')},980);
+};
+$('auto').onclick=()=>{auto=!auto;$('auto').setAttribute('aria-pressed',String(auto));scheduleBlink()};
+function suspend(){
+  for(const key of [...timers.keys()])stopTimer(key);
+  cancelAnimationFrame(raf);raf=0;tweens.clear();held=blinking=reading=surprised=false;
+  $('notice').hidden=true;
+  Object.assign(pose,{x:0,y:0,px:0,py:0,top:sleeping?1:0,bottom:0,pupil:1,iris:1});render();
+}
+document.addEventListener('visibilitychange',()=>{if(document.hidden)suspend();else{label(sleeping?'дремота':'внимание');scheduleBlink();if(!sleeping)scheduleIdle()}});
+window.addEventListener('blur',release);
+reduced.addEventListener('change',()=>{suspend();scheduleBlink();if(!sleeping)scheduleIdle()});
+render();scheduleBlink();scheduleIdle();
+
 </script></html>
