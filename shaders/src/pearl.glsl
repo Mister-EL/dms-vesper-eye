@@ -92,7 +92,7 @@ vec4 eye(vec2 q) {
     float halo = exp(-dOut / 0.16) * mix(0.42, 0.20, uLight) + exp(-dOut / 0.045) * 0.25;
     // На светлом фоне свечения не видно: там глаз очерчивает мягкая сиреневая тень.
     haloCol = mix(haloCol, uC3.rgb * 0.7, uLight * 0.55);
-    halo *= mix(1.0, 1.7, uLight) * (1.0 - inside);
+    halo *= mix(1.0, 1.7, uLight) * (1.0 - inside) * (1.0 - smoothstep(0.06, 0.33, dOut));
 
     vec4 col = vec4(haloCol * halo, halo);
     col = over(col, body, inside);

@@ -2,7 +2,7 @@
   "id": "vesperEye",
   "name": "Vesper Eye",
   "description": "A living eye for the desktop: it follows the pointer, blinks, dozes off and comes in several looks.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Mister-EL",
   "type": "desktop",
   "capabilities": [

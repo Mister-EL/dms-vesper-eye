@@ -58,7 +58,7 @@ vec4 eye(vec2 q) {
     body = mix(body, uC4.rgb, stroke(dBot, 0.6 * w) * 0.42);
 
     float dOut = max(dShape, 0.0);
-    float glow = exp(-dOut / 0.22) * 0.10 * (1.0 - inside);
+    float glow = exp(-dOut / 0.22) * 0.10 * (1.0 - inside) * (1.0 - smoothstep(0.06, 0.33, dOut));
     vec4 col = vec4(uC3.rgb * glow, glow);
     col = over(col, body, inside);
     col = over(col, uC4.rgb, stroke(dShape + 0.6 * w, 0.6 * w) * 0.55);
