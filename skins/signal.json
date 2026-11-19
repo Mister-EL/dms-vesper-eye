@@ -1,0 +1,21 @@
+{
+  "title": "Сигнал",
+  "note": "Чёрный, белый, серый и одна ярко-зелёная радужка. Чертёж и прибор.",
+  "shader": "signal",
+  "irisRadius": 0.74,
+  "restLid": 0.0,
+  "motion": { "omega": 30, "blinkClose": 60, "blinkHold": 20, "blinkOpen": 120 },
+  "themeMap": ["surfaceText", "", "primary", "", "", "outline", "", "primary"],
+  "variants": {
+    "dark": {
+      "title": "Ночь",
+      "page": { "bg": "#000000", "surface": "#0E0E10", "text": "#F4F4F5", "muted": "#A1A1AA", "a1": "#3DFF6E", "a2": "#D4D4D8", "a3": "#8E8E96", "outline": "#5E5E66" },
+      "colors": ["#F4F4F5", "#000000", "#3DFF6E", "#000000", "#FFFFFF", "#6B6B73", "#000000", "#1F8A3C"]
+    },
+    "light": {
+      "title": "Бумага",
+      "page": { "bg": "#EDEDEE", "surface": "#FFFFFF", "text": "#0B0B0C", "muted": "#55555C", "a1": "#008A34", "a2": "#3F3F46", "a3": "#71717A", "outline": "#8A8A93" },
+      "colors": ["#0B0B0C", "#FFFFFF", "#3DFF6E", "#0B0B0C", "#FFFFFF", "#8A8A93", "#EDEDEE", "#1F8A3C"]
+    }
+  }
+}

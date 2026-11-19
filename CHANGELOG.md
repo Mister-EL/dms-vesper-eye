@@ -1,17 +1,20 @@
-# 0.1.1 — responsive gaze
+# Изменения
 
-- Frame-synchronized gaze interpolation instead of the 33 ms Eco timer.
-- 60 Hz cursor sampling during motion; 80–100 ms idle detection, unchanged DPMS suspension.
-- Eye size is a per-instance desktop setting, independent of eyelid geometry.
+## 1.0.0 — 2026-11-19
 
-# Changelog
+Глаз переписан: один движок и сменные образы.
 
-## 0.1.0 — 2026-09-06 (preview)
+- Образы: Перламутр, Сигнал, Затмение, Сеть, Неон-нуар и прежний Веспер; у Перламутра и Сигнала есть светлый вариант.
+- Глаз стал объёмным: радужка сплющивается при взгляде в сторону, блики стоят на месте, верхнее веко следует за взглядом, появилась тень от века.
+- Глаз не работает впустую: под окнами, при блокировке и когда человек отошёл, нет ни опроса указателя, ни кадров.
+- Позиция указателя берётся у Hyprland прямо из оболочки; помощник на Python убран.
+- Кадры при движении ограничены (по умолчанию 60 в секунду) и не запрашиваются, пока изменение незаметно.
+- Новые состояния и реакции: сон после дремоты, пробуждение от любого ввода, взгляд вслед смене рабочего стола, усталое веко при низком заряде.
+- Защита OLED: медленный сдвиг рисунка и приглушение во сне.
+- Настройки: образ, вариант, характер, цвета из темы оболочки, предел кадров.
+- Работает в Dux Shell 2.1 и в DMS 1.6.
+- Версия 0.1.1 сохранена в `legacy/v0.1/`.
 
-- First native DMS 1.6.0 desktop plugin; archived Noctalia snapshot remains intact.
-- Separate eyelid masking; no whole-eye vertical scaling during blink or drowsiness.
-- Bounded, time-based iris/pupil tracking with layer-shell position correction.
-- Hold/release, double-click, drowsiness/wake and rate-limited notification reactions.
-- Eco default, adaptive read-only cursor bridge, DPMS/visibility shutdown, bounded retries.
-- QSB with cross-backend variants; Qt 6 behavior tests and Python IPC tests.
-- See docs/VALIDATION.md for measurements and unverified real-session scenarios.
+## 0.1.1, 0.1.0 — 2026-09-06
+
+См. `legacy/v0.1/CHANGELOG.md`.

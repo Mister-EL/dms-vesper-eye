@@ -1,0 +1,16 @@
+{
+  "title": "Неон-нуар",
+  "note": "Киберпанк: оптический имплант с диафрагмой. Циан и маджента на чёрном стекле.",
+  "shader": "neon",
+  "irisRadius": 0.74,
+  "restLid": 0.0,
+  "motion": { "omega": 26, "blinkClose": 70, "blinkHold": 30, "blinkOpen": 150 },
+  "themeMap": ["", "secondary", "primary", "tertiary", "", "", "", ""],
+  "variants": {
+    "dark": {
+      "title": "Ночной город",
+      "page": { "bg": "#05030A", "surface": "#0E0818", "text": "#ECE8FF", "muted": "#A99FD0", "a1": "#FF3D9A", "a2": "#2DE2FF", "a3": "#FFE45C", "outline": "#5B4A86" },
+      "colors": ["#0E0818", "#2DE2FF", "#FF3D9A", "#8A5CFF", "#FFE45C", "#FF2D55", "#0B0714", "#2A2148"]
+    }
+  }
+}

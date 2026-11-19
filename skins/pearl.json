@@ -1,0 +1,71 @@
+{
+  "title": "Перламутр",
+  "note": "Пастель: белый, розовый, голубой. Опаловая радужка с переливом.",
+  "shader": "pearl",
+  "irisRadius": 0.9,
+  "motion": {
+    "omega": 17,
+    "blinkClose": 110,
+    "blinkHold": 40,
+    "blinkOpen": 240
+  },
+  "variants": {
+    "dark": {
+      "title": "Сумерки",
+      "page": {
+        "bg": "#0C0A12",
+        "surface": "#15121E",
+        "text": "#F3EDF6",
+        "muted": "#B9B0CC",
+        "a1": "#F5A8C6",
+        "a2": "#A8D2F5",
+        "a3": "#CDBEF5",
+        "outline": "#6F6788"
+      },
+      "colors": [
+        "#FBF6FA",
+        "#CBBFE2",
+        "#8EC5F2",
+        "#C7B5F1",
+        "#F3A6C6",
+        "#2F2A45",
+        "#17131F",
+        "#E9B8A6"
+      ]
+    },
+    "light": {
+      "title": "День",
+      "page": {
+        "bg": "#F8F4F6",
+        "surface": "#FFFFFF",
+        "text": "#2F2A45",
+        "muted": "#6A6382",
+        "a1": "#B84877",
+        "a2": "#3674B4",
+        "a3": "#6F5CB8",
+        "outline": "#B9ACC0"
+      },
+      "colors": [
+        "#FDFBFC",
+        "#D6CBE8",
+        "#8EC5F2",
+        "#C7B5F1",
+        "#F3A6C6",
+        "#2F2A45",
+        "#FBF7F8",
+        "#E9B8A6"
+      ]
+    }
+  },
+  "restLid": 0.1,
+  "themeMap": [
+    "",
+    "",
+    "secondary",
+    "tertiary",
+    "primary",
+    "",
+    "surface",
+    "primary"
+  ]
+}

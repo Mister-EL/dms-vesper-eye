@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vesper Eye · образы</title>
+<style>
+:root { --bg:#0C0A12; --surface:#15121E; --text:#F3EDF6; --muted:#B9B0CC; --a1:#F5A8C6; --a2:#A8D2F5; --a3:#CDBEF5; --outline:#6F6788; }
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, sans-serif; transition: background .35s, color .35s; }
+main { max-width: 1280px; margin: 0 auto; padding: clamp(16px, 3vw, 40px); }
+h1 { font-size: clamp(26px, 4vw, 40px); font-weight: 600; margin: 0 0 6px; letter-spacing: -0.01em; }
+p.lead { color: var(--muted); max-width: 70ch; margin: 0 0 22px; }
+.tabs, .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button { font: inherit; color: var(--text); background: var(--surface); border: 1px solid var(--outline); border-radius: 10px; padding: 7px 14px; cursor: pointer; }
+button:hover, button:focus-visible { border-color: var(--a1); outline: none; }
+button[aria-pressed=true] { border-color: var(--a1); color: var(--a1); }
+.stage { margin: 18px 0 10px; border: 1px solid var(--outline); border-radius: 18px; background: var(--bg); overflow: hidden; }
+.stage canvas { display: block; width: 100%; aspect-ratio: 5.7 / 2.7; touch-action: none; }
+.note { color: var(--muted); font-size: 13px; }
+.swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 10px; margin: 16px 0 28px; }
+.sw i { display: block; height: 44px; border-radius: 9px; border: 1px solid #8884; }
+.sw b { display: block; font-weight: 500; font-size: 12px; margin-top: 6px; }
+.sw code { font: 11px ui-monospace, monospace; color: var(--muted); }
+h2 { font-size: 20px; font-weight: 600; margin: 26px 0 12px; }
+.gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 14px; }
+.card { border: 1px solid var(--outline); border-radius: 14px; overflow: hidden; cursor: pointer; }
+.card canvas { display: block; width: 100%; aspect-ratio: 5.7 / 2.7; }
+.card div { padding: 9px 12px 11px; background: var(--surface); }
+.card b { font-weight: 600; }
+.card span { display: block; color: var(--muted); font-size: 12.5px; }
+.err { white-space: pre-wrap; color: #ff8080; font: 12px ui-monospace, monospace; padding: 10px; }
+body.solo main { display: none; }
+body.solo canvas#solo { position: fixed; inset: 0; width: 100vw; height: 100vh; }
+</style>
+<body>
+<main>
+  <h1>Vesper Eye · образы</h1>
+  <p class="lead">Глаз следит за указателем. Удержание кнопки мыши на глазу закрывает веки, двойной щелчок вызывает удивление. Это те же шейдеры, что работают в плагине.</p>
+  <div class="tabs" id="tabs"></div>
+  <div class="stage"><canvas id="stage"></canvas></div>
+  <div class="row">
+    <button id="variant"></button>
+    <button id="blink">Моргнуть</button>
+    <button id="sleep" aria-pressed="false">Сон</button>
+    <button id="notify">Уведомление</button>
+    <span class="note" id="meter"></span>
+  </div>
+  <p class="note" id="skinnote"></p>
+  <div class="swatches" id="swatches"></div>
+  <h2>Все образы</h2>
+  <div class="gallery" id="gallery"></div>
+</main>
+<canvas id="solo" hidden></canvas>
+<pre class="err" id="err"></pre>
+<script>
+const DATA = /*__DATA__*/null;
+const VS = `#version 300 es
+in vec2 a; out vec2 vUv;
+void main() { vUv = vec2(a.x * 0.5 + 0.5, 0.5 - a.y * 0.5); gl_Position = vec4(a, 0.0, 1.0); }`;
+const UNI = ['uTime','uSize','uUnit','uPupil','uGaze','uGaze2','uLidTop','uLidBot','uEnergy','uWake','uPulse','uDim','uPulseDir','uLight','uC0','uC1','uC2','uC3','uC4','uC5','uC6','uC7','uP0','uP1'];
+const hex = h => { const n = parseInt(h.slice(1), 16); return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255, 1]; };
+function fail(msg) { document.getElementById('err').textContent += msg + '\n'; console.log('SHADER-ERROR ' + msg); }
+
+// Один холст с одним образом: своя программа, своё состояние взгляда и век.
+function Eye(canvas, skinId, variant) {
+  const gl = canvas.getContext('webgl2', { premultipliedAlpha: true, antialias: false });
+  if (!gl) { fail('WebGL2 недоступен'); return null; }
+  const eye = { canvas, gl, skinId, variant, progs: {}, t0: performance.now(),
+    gx: 0, gy: 0, vx: 0, vy: 0, px: 0, py: 0, tx: 0, ty: 0, pupil: 1, pupilT: 1,
+    lidT: 0, lidB: 0, blink: 0, held: 0, sleep: 0, wake: 0, pulse: 0, pdx: 1, pdy: 0, fixed: null };
+  const buf = gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+  function program(id) {
+    if (eye.progs[id]) return eye.progs[id];
+    const sh = (type, src) => { const s = gl.createShader(type); gl.shaderSource(s, src); gl.compileShader(s);
+      if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) fail(id + ': ' + gl.getShaderInfoLog(s)); return s; };
+    const p = gl.createProgram(); gl.attachShader(p, sh(gl.VERTEX_SHADER, VS)); gl.attachShader(p, sh(gl.FRAGMENT_SHADER, DATA.shaders[id]));
+    gl.linkProgram(p); if (!gl.getProgramParameter(p, gl.LINK_STATUS)) fail(id + ': ' + gl.getProgramInfoLog(p));
+    const loc = {}; for (const u of UNI) loc[u] = gl.getUniformLocation(p, u);
+    return eye.progs[id] = { p, loc, a: gl.getAttribLocation(p, 'a') };
+  }
+  eye.draw = function (now) {
+    const skin = DATA.skins[eye.skinId], v = skin.variants[eye.variant] || skin.variants.dark;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const w = Math.max(2, Math.round(canvas.clientWidth * dpr)), h = Math.max(2, Math.round(canvas.clientHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h) { canvas.width = w; canvas.height = h; }
+    const { p, loc, a } = program(skin.shader);
+    gl.viewport(0, 0, w, h); gl.clearColor(0, 0, 0, 0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.enable(gl.BLEND); gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.useProgram(p); gl.bindBuffer(gl.ARRAY_BUFFER, buf); gl.enableVertexAttribArray(a); gl.vertexAttribPointer(a, 2, gl.FLOAT, false, 0, 0);
+    const f = eye.fixed || {};
+    const lidT = f.lt ?? Math.min(1, Math.max(eye.blink, eye.held, eye.sleep) + Math.max(0, eye.gy) * 0.16 - Math.max(0, -eye.gy) * 0.03);
+    const lidB = f.lb ?? Math.max(eye.blink * 0.9, eye.held);
+    gl.uniform1f(loc.uTime, f.time ?? (now - eye.t0) / 1000);
+    gl.uniform2f(loc.uSize, w, h); gl.uniform1f(loc.uUnit, Math.min(h / 2.7, w / 5.7));
+    gl.uniform1f(loc.uPupil, f.pupil ?? eye.pupil);
+    gl.uniform2f(loc.uGaze, f.gx ?? eye.gx, f.gy ?? eye.gy); gl.uniform2f(loc.uGaze2, f.px ?? f.gx ?? eye.px, f.py ?? f.gy ?? eye.py);
+    gl.uniform1f(loc.uLidTop, lidT); gl.uniform1f(loc.uLidBot, lidB);
+    gl.uniform1f(loc.uEnergy, f.energy ?? 0); gl.uniform1f(loc.uWake, f.wake ?? eye.wake);
+    gl.uniform1f(loc.uPulse, f.pulse ?? eye.pulse); gl.uniform2f(loc.uPulseDir, eye.pdx, eye.pdy);
+    gl.uniform1f(loc.uDim, f.dim ?? (1 - 0.5 * eye.sleep)); gl.uniform1f(loc.uLight, eye.variant === 'light' ? 1 : 0);
+    v.colors.forEach((c, i) => gl.uniform4fv(loc['uC' + i], hex(c)));
+    gl.uniform4fv(loc.uP0, v.p0 || [0, 0, 0, 0]); gl.uniform4fv(loc.uP1, v.p1 || [0, 0, 0, 0]);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+  };
+  // Упрощённая копия поведения плагина: пружина взгляда, моргание, удержание.
+  eye.step = function (dt, pointer) {
+    const r = canvas.getBoundingClientRect(), unit = Math.min(r.height / 2.7, r.width / 5.7);
+    const dx = pointer.x - (r.left + r.width / 2), dy = pointer.y - (r.top + r.height / 2);
+    const z = 2.2 * unit, n = Math.hypot(dx, dy, z);
+    if (!eye.sleep) { eye.tx = dx / n; eye.ty = dy / n; } else { eye.tx = 0; eye.ty = 0; }
+    const om = DATA.skins[eye.skinId].motion?.omega || 20, k = om * om, c = 2 * om;
+    eye.vx += (k * (eye.tx - eye.gx) - c * eye.vx) * dt; eye.vy += (k * (eye.ty - eye.gy) - c * eye.vy) * dt;
+    eye.gx += eye.vx * dt; eye.gy += eye.vy * dt;
+    const b = 1 - Math.exp(-dt / 0.09); eye.px += (eye.gx - eye.px) * b; eye.py += (eye.gy - eye.py) * b;
+    eye.pupil += (eye.pupilT - eye.pupil) * (1 - Math.exp(-dt / 0.12));
+    eye.wake = Math.max(0, eye.wake - dt * 2.2); if (eye.pulse > 0) { eye.pulse += dt / 1.1; if (eye.pulse >= 1) eye.pulse = 0; }
+  };
+  return eye;
+}
+function tween(obj, key, to, ms, done) { const from = obj[key], t0 = performance.now();
+  (function f(now) { const p = Math.min(1, (now - t0) / ms), e = 1 - Math.pow(1 - p, 3); obj[key] = from + (to - from) * e; if (p < 1) requestAnimationFrame(f); else if (done) done(); })(t0); }
+function blink(eye) { const m = DATA.skins[eye.skinId].motion || {}; if (eye.sleep) return;
+  tween(eye, 'blink', 1, m.blinkClose || 90, () => setTimeout(() => tween(eye, 'blink', 0, m.blinkOpen || 180), m.blinkHold || 30)); }
+
+const q = new URLSearchParams(location.search);
+if (q.has('solo')) {
+  // Статичный кадр для проверки: ?solo=pearl&variant=dark&gx=0.4&gy=-0.2&lt=0&lb=0&pupil=1&bg=000000
+  document.body.classList.add('solo'); const cv = document.getElementById('solo'); cv.hidden = false;
+  document.documentElement.style.background = document.body.style.background = '#' + (q.get('bg') || '000000'); document.getElementById('err').style.padding = 0;
+  const eye = Eye(cv, q.get('solo'), q.get('variant') || 'dark'); const num = k => q.has(k) ? parseFloat(q.get(k)) : undefined;
+  eye.fixed = { gx: num('gx') ?? 0, gy: num('gy') ?? 0, px: num('px'), py: num('py'), lt: num('lt') ?? 0, lb: num('lb') ?? 0, pupil: num('pupil') ?? 1,
+    wake: num('wake') ?? 0, pulse: num('pulse') ?? 0, dim: num('dim') ?? 1, energy: num('energy') ?? 0, time: num('time') ?? 0 };
+  if (q.has('pdx')) { eye.pdx = num('pdx'); eye.pdy = num('pdy') ?? 0; }
+  requestAnimationFrame(now => { eye.draw(now); document.title = 'READY'; });
+} else {
+  const pointer = { x: innerWidth / 2, y: innerHeight / 2 };
+  addEventListener('pointermove', e => { pointer.x = e.clientX; pointer.y = e.clientY; });
+  let current = q.get('skin') || DATA.order[0], variant = q.get('variant') || 'dark';
+  const stage = Eye(document.getElementById('stage'), current, variant); const eyes = [stage];
+  const tabs = document.getElementById('tabs'), gallery = document.getElementById('gallery');
+  for (const id of DATA.order) {
+    const s = DATA.skins[id];
+    const b = document.createElement('button'); b.textContent = s.title; b.dataset.id = id; b.onclick = () => select(id); tabs.append(b);
+    const card = document.createElement('div'); card.className = 'card'; const cv = document.createElement('canvas');
+    const cap = document.createElement('div'); cap.innerHTML = '<b></b><span></span>'; cap.firstChild.textContent = s.title; cap.lastChild.textContent = s.note;
+    card.append(cv, cap); card.onclick = () => { select(id); scrollTo({ top: 0, behavior: 'smooth' }); }; gallery.append(card);
+    eyes.push(Eye(cv, id, 'dark'));
+  }
+  function select(id) { current = id; stage.skinId = id; if (!DATA.skins[id].variants[variant]) variant = 'dark'; paint(); }
+  function paint() {
+    const s = DATA.skins[current], v = s.variants[variant], pg = v.page; stage.variant = variant;
+    for (const [k, val] of Object.entries(pg)) document.documentElement.style.setProperty('--' + k, val);
+    for (const b of tabs.children) b.setAttribute('aria-pressed', String(b.dataset.id === current));
+    const other = variant === 'dark' ? 'light' : 'dark'; const vb = document.getElementById('variant');
+    vb.hidden = !s.variants[other]; vb.textContent = 'Вариант: ' + v.title;
+    document.getElementById('skinnote').textContent = s.note;
+    const sw = document.getElementById('swatches'); sw.textContent = '';
+    const names = { bg: 'Фон', surface: 'Поверхность', text: 'Текст', muted: 'Приглушённый', a1: 'Акцент 1', a2: 'Акцент 2', a3: 'Акцент 3', outline: 'Рамка' };
+    for (const [k, val] of Object.entries(pg)) { const d = document.createElement('div'); d.className = 'sw'; d.innerHTML = '<i></i><b></b><code></code>';
+      d.children[0].style.background = val; d.children[1].textContent = names[k] || k; d.children[2].textContent = val; sw.append(d); }
+  }
+  document.getElementById('variant').onclick = () => { const o = variant === 'dark' ? 'light' : 'dark'; if (DATA.skins[current].variants[o]) { variant = o; paint(); } };
+  document.getElementById('blink').onclick = () => blink(stage);
+  document.getElementById('sleep').onclick = e => { const on = !stage.sleep; tween(stage, 'sleep', on ? 1 : 0, on ? 900 : 380, () => { if (!on) { stage.wake = 1; blink(stage); } }); e.target.setAttribute('aria-pressed', String(on)); };
+  document.getElementById('notify').onclick = () => { stage.pulse = 0.001; stage.pdx = 0.8; stage.pdy = -0.6; stage.pupilT = 1.12; setTimeout(() => stage.pupilT = 1, 500); };
+  const sc = stage.canvas;
+  sc.addEventListener('pointerdown', () => tween(stage, 'held', 1, 180)); addEventListener('pointerup', () => stage.held && tween(stage, 'held', 0, 210));
+  sc.addEventListener('dblclick', () => { stage.pupilT = 1.3; setTimeout(() => stage.pupilT = 1, 550); });
+  (function auto() { setTimeout(() => { eyes.forEach(e => Math.random() < 0.8 && blink(e)); auto(); }, 4000 + Math.random() * 5000); })();
+  paint(); let last = performance.now(), acc = 0, frames = 0;
+  (function loop(now) { const dt = Math.min(0.05, (now - last) / 1000); last = now;
+    for (const e of eyes) { e.step(dt, pointer); e.draw(now); }
+    acc += dt; frames++; if (acc > 1) { document.getElementById('meter').textContent = Math.round(frames / acc) + ' кадров в секунду'; acc = 0; frames = 0; }
+    requestAnimationFrame(loop); })(last);
+}
+</script>
+</body>
+</html>

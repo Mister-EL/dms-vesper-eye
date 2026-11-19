@@ -1,0 +1,16 @@
+{
+  "title": "Затмение",
+  "note": "Полное солнечное затмение: чёрный диск Луны, жемчужная корона и серп Солнца при взгляде в сторону.",
+  "shader": "eclipse",
+  "irisRadius": 0.9,
+  "restLid": 0.08,
+  "motion": { "omega": 14, "blinkClose": 130, "blinkHold": 50, "blinkOpen": 280 },
+  "themeMap": ["", "", "primary", "", "", "", "tertiary", ""],
+  "variants": {
+    "dark": {
+      "title": "Полная фаза",
+      "page": { "bg": "#000000", "surface": "#0A0B10", "text": "#F1EEE6", "muted": "#A5A7B5", "a1": "#F3DDAA", "a2": "#FF6F8B", "a3": "#9DB4FF", "outline": "#5F6274" },
+      "colors": ["#F6F1E7", "#F3DDAA", "#FF5E7E", "#0B1020", "#020308", "#000000", "#9DB4FF", "#04050A"]
+    }
+  }
+}
