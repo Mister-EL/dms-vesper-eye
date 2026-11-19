@@ -22,6 +22,8 @@ Item {
     property real pulseY: 0
     property real dim: 1
     property real time: 0
+    // Сигналы машины для образов, которые их показывают: сеть, защищённый канал, рабочие столы.
+    property var signals: null
     // Сдвиг рисунка на несколько пикселей: защита OLED от выгорания.
     property real driftX: 0
     property real driftY: 0
@@ -78,7 +80,7 @@ Item {
         property vector4d uC5: root.slot(5)
         property vector4d uC6: root.slot(6)
         property vector4d uC7: root.slot(7)
-        property vector4d uP0: root.param("p0")
+        property vector4d uP0: (root.signals && root.skin && root.skin.signals) ? root.signals : root.param("p0")
         property vector4d uP1: root.param("p1")
         fragmentShader: root.skin ? Qt.resolvedUrl("../shaders/" + root.skin.shader + ".frag.qsb") : ""
         onStatusChanged: {

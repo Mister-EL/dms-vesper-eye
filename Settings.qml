@@ -28,6 +28,13 @@ PluginSettings {
     ToggleSetting { settingKey: "followCursor"; label: qsTr("Следить за указателем"); defaultValue: true }
     ToggleSetting { settingKey: "notifications"; label: qsTr("Взгляд на уведомления"); defaultValue: true }
     ToggleSetting { settingKey: "music"; label: qsTr("Реакция на музыку (выключена на батарее)"); defaultValue: false }
+    StringSetting {
+        settingKey: "tunnelInterface"
+        label: qsTr("Интерфейс туннеля")
+        description: qsTr("Имя сетевого интерфейса VPN вне NetworkManager, например singbox_tun; образ «Связи» покажет второй контур")
+        placeholder: "singbox_tun"
+        defaultValue: ""
+    }
     ToggleSetting { settingKey: "ecoMode"; label: qsTr("Экономичный режим"); defaultValue: true }
     SelectionSetting {
         settingKey: "fpsCap"

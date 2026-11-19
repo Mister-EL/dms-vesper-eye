@@ -2,14 +2,69 @@
 // Создано tools/build.py из skins/*.json. Руками не править.
 var data = {
  "order": [
+  "nexus",
   "pearl",
   "signal",
-  "lattice",
   "neon",
   "eclipse",
   "vesper"
  ],
  "skins": {
+  "nexus": {
+   "title": "Связи",
+   "note": "Объёмный шар из узлов и связей: поворачивается за указателем и показывает связи самой машины.",
+   "shader": "nexus",
+   "irisRadius": 0.58,
+   "restLid": 0.0,
+   "signals": true,
+   "motion": {
+    "omega": 16,
+    "blinkClose": 90,
+    "blinkHold": 40,
+    "blinkOpen": 220
+   },
+   "themeMap": [
+    "primary",
+    "surfaceText",
+    "secondary",
+    "tertiary",
+    "primary",
+    "outline",
+    "primary",
+    "surfaceText"
+   ],
+   "variants": {
+    "dark": {
+     "title": "Ночь",
+     "page": {
+      "bg": "#02050A",
+      "surface": "#0A111D",
+      "text": "#E6EEFA",
+      "muted": "#93A8C9",
+      "a1": "#5CC8FF",
+      "a2": "#FFB454",
+      "a3": "#7AF0D0",
+      "outline": "#4A6088"
+     },
+     "colors": [
+      "#5CC8FF",
+      "#EAF4FF",
+      "#FFB454",
+      "#7AF0D0",
+      "#3A8FD6",
+      "#8FB6E0",
+      "#3F7FB8",
+      "#DCEBFF"
+     ],
+     "p0": [
+      1,
+      0,
+      2,
+      5
+     ]
+    }
+   }
+  },
   "pearl": {
    "title": "Перламутр",
    "note": "Пастель: белый, розовый, голубой. Опаловая радужка с переливом.",
@@ -148,54 +203,6 @@ var data = {
       "#8A8A93",
       "#EDEDEE",
       "#1F8A3C"
-     ]
-    }
-   }
-  },
-  "lattice": {
-   "title": "Сеть",
-   "note": "Глаз, сплетённый из узлов и связей: созвездие, карта маршрутов. Пакет бежит к корневому узлу.",
-   "shader": "lattice",
-   "irisRadius": 0.78,
-   "restLid": 0.0,
-   "motion": {
-    "omega": 18,
-    "blinkClose": 100,
-    "blinkHold": 40,
-    "blinkOpen": 220
-   },
-   "themeMap": [
-    "primary",
-    "surfaceText",
-    "tertiary",
-    "secondary",
-    "",
-    "",
-    "outline",
-    "primary"
-   ],
-   "variants": {
-    "dark": {
-     "title": "Магистраль",
-     "page": {
-      "bg": "#03060C",
-      "surface": "#0A111D",
-      "text": "#E4EEFF",
-      "muted": "#93A8C9",
-      "a1": "#5CC8FF",
-      "a2": "#FFC46B",
-      "a3": "#6DFFD0",
-      "outline": "#4A6088"
-     },
-     "colors": [
-      "#5CC8FF",
-      "#E3EEFF",
-      "#FFC46B",
-      "#6DFFD0",
-      "#123E73",
-      "#000000",
-      "#2F6DB5",
-      "#7CCBFF"
      ]
     }
    }

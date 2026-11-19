@@ -2,6 +2,7 @@ import QtQuick
 import Quickshell
 import Quickshell.Wayland
 import Quickshell.Io
+import Quickshell.Hyprland
 import qs.Common
 import qs.Services
 import qs.Modules.Plugins
@@ -91,6 +92,31 @@ DesktopPluginComponent {
     Component.onCompleted: updateAudio()
     Component.onDestruction: if (audioRegistered) CavaService.refCount = Math.max(0, CavaService.refCount - 1)
 
+    // Сигналы для образа «Связи»: есть ли сеть, поднят ли защищённый канал, рабочие столы.
+    readonly property bool online: (NetworkService.networkStatus ?? "disconnected") !== "disconnected"
+    property bool tunnelUp: false
+    readonly property string tunnelName: pluginData.tunnelInterface ?? ""
+    readonly property bool secure: (NetworkService.vpnConnected ?? false) || tunnelUp
+    readonly property int workspaceCount: {
+        const list = Hyprland.workspaces ? Hyprland.workspaces.values : [];
+        let top = 0;
+        for (let i = 0; i < list.length; i++) if (list[i].id > top) top = list[i].id;
+        return Math.min(10, top);
+    }
+    readonly property int workspaceActive: Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id : 0
+    readonly property vector4d signals: Qt.vector4d(online ? 1 : 0, secure ? 1 : 0, workspaceActive, workspaceCount)
+    // Туннель вне NetworkManager (например, sing-box) виден только как сетевой интерфейс: сверяемся изредка.
+    FileView {
+        id: tunnelFile
+        path: root.tunnelName ? "/sys/class/net/" + root.tunnelName + "/ifindex" : ""
+        blockLoading: false
+        printErrors: false
+        onLoaded: root.tunnelUp = true
+        onLoadFailed: root.tunnelUp = false
+    }
+    Timer { interval: 60000; repeat: true; running: root.tunnelName !== "" && presence.awake; onTriggered: tunnelFile.reload() }
+    onOnlineChanged: if (tunnelName) tunnelFile.reload()
+
     // Защита OLED: раз в три минуты рисунок смещается на пару пикселей.
     property int driftStep: 0
     readonly property var driftPath: [[0, 0], [3, 0], [3, 2], [0, 3], [-3, 2], [-3, 0], [0, -2], [2, -3]]
@@ -172,6 +198,7 @@ DesktopPluginComponent {
         pulseX: behavior.pulseX
         pulseY: behavior.pulseY
         dim: behavior.dim
+        signals: root.signals
         driftX: root.driftPath[root.driftStep][0]
         driftY: root.driftPath[root.driftStep][1]
     }
