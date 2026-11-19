@@ -28,10 +28,13 @@ vec4 eye(vec2 q) {
     ir = mix(ir, uC4.rgb, smoothstep(0.58, 0.96, r));
     float f1 = vnoiseWrap(vec2(an * 64.0, r * 2.6 + 3.0), 64.0);
     float f2 = vnoiseWrap(vec2(an * 180.0, r * 5.0 + 11.0), 180.0);
-    float fib = f1 * 0.62 + f2 * 0.38;
+    float f3 = vnoiseWrap(vec2(an * 420.0, r * 9.0 + 2.0), 420.0);
+    float fib = f1 * 0.50 + f2 * 0.32 + f3 * 0.18;
     float fibMask = smoothstep(0.34, 0.5, r) * (1.0 - smoothstep(0.86, 0.99, r));
-    ir *= 1.0 + (fib - 0.5) * 0.30 * fibMask;
-    ir += vec3(1.0) * pow(fib, 4.0) * 0.12 * fibMask;
+    // Тонкие волокна: светлые нити и тёмные борозды между ними, а не размытые полосы.
+    ir *= 1.0 + (fib - 0.5) * 0.46 * fibMask;
+    ir *= 1.0 - smoothstep(0.50, 0.30, fib) * 0.22 * fibMask;
+    ir += vec3(1.0) * smoothstep(0.66, 0.86, fib) * 0.13 * fibMask;
     float wob = (vnoiseWrap(vec2(an * 24.0, 1.7), 24.0) - 0.5) * 0.07;
     float coll = exp(-pow((r - 0.44 - wob) / 0.075, 2.0));
     ir = mix(ir, mix(uC0.rgb, uC2.rgb, 0.35), coll * 0.42);
@@ -39,7 +42,7 @@ vec4 eye(vec2 q) {
     float shift = 0.5 + 0.5 * sin(ang * 2.0 + dot(uGaze, vec2(2.6, 1.9)) + r * 3.0);
     ir = mix(ir, ir.bgr, shift * 0.22 * smoothstep(0.3, 0.7, r));
     vec3 limb = mix(uC3.rgb, uC5.rgb, 0.55);
-    ir = mix(ir, limb, smoothstep(0.78, 1.0, r) * 0.80);
+    ir = mix(ir, limb, smoothstep(0.76, 0.99, r) * 0.88);
     // Свет падает сверху слева и собирается ярким серпом на противоположной стороне.
     vec2 L = normalize(vec2(-0.62, -0.78));
     float ca = smoothstep(0.1, 1.0, dot(u / max(r, 1e-3), -L)) * smoothstep(0.38, 0.72, r) * (1.0 - smoothstep(0.78, 0.98, r));
@@ -50,9 +53,10 @@ vec4 eye(vec2 q) {
     float rp = 0.34 * uPupil;
     float dp = length(u - pOff) - rp;
     float pm = coverSoft(dp, 2.0 * w / P_RI);
-    vec3 pcol = uC5.rgb + uC2.rgb * 0.10 * smoothstep(-0.3 * rp, 0.0, dp);
+    // Зрачок глубокий: к центру темнее, по кромке — тонкий холодный отсвет.
+    vec3 pcol = uC5.rgb * mix(0.55, 1.0, smoothstep(-rp, 0.0, dp)) + uC2.rgb * 0.16 * smoothstep(-0.22 * rp, 0.0, dp);
     ir = mix(ir, pcol, pm);
-    ir += uC0.rgb * exp(-pow(dp / 0.035, 2.0)) * 0.10 * (1.0 - pm);
+    ir += uC2.rgb * exp(-pow(dp / 0.022, 2.0)) * 0.30 * (1.0 - pm);
 
     vec3 inner = mix(scl, ir, irisMask);
 
@@ -70,6 +74,7 @@ vec4 eye(vec2 q) {
     float sec = coverSoft(length(q - hs) - 0.05 * P_RI, 0.012) * 0.7;
     float hl = clamp(key * 0.93 + sec, 0.0, 1.0) * mix(0.35, 1.0, irisMask);
     inner = mix(inner, vec3(1.0), hl);
+    inner += vec3(1.0, 0.96, 0.98) * exp(-max(sdRoundBox(hq, vec2(0.20, 0.15) * P_RI, 0.05), 0.0) / 0.05) * 0.16 * irisMask;
 
     // Искра при пробуждении.
     if (uWake > 0.001) {

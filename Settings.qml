@@ -8,8 +8,8 @@ PluginSettings {
         settingKey: "skin"
         label: qsTr("Образ")
         description: qsTr("Внешний вид глаза")
-        options: Skins.data.order.map(id => ({ "label": Skins.data.skins[id].title, "value": id }))
-        defaultValue: Skins.data.order[0]
+        options: [{ "label": qsTr("По профилю оформления"), "value": "auto" }].concat(Skins.data.order.map(id => ({ "label": Skins.data.skins[id].title, "value": id })))
+        defaultValue: "auto"
     }
     SelectionSetting {
         settingKey: "variant"

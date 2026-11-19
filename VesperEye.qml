@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell
 import Quickshell.Wayland
+import Quickshell.Io
 import qs.Common
 import qs.Services
 import qs.Modules.Plugins
@@ -18,12 +19,37 @@ DesktopPluginComponent {
     minHeight: 135
 
     // Настройки экземпляра.
-    readonly property string skinId: (pluginData.skin && Skins.data.skins[pluginData.skin]) ? pluginData.skin : Skins.data.order[0]
+    // Образ «по профилю»: файл темы оболочки может назвать образ глаза сам,
+    // полем "vesperEye": { "skin": "...", "variant": "dark" | "light" }. Тогда глаз меняется вместе с темой.
+    property string profileSkin: ""
+    property string profileVariant: ""
+    readonly property string skinId: {
+        const asked = pluginData.skin ?? "auto";
+        const want = asked === "auto" ? profileSkin : asked;
+        return Skins.data.skins[want] ? want : Skins.data.order[0];
+    }
     readonly property var skin: Skins.data.skins[skinId]
     readonly property string variant: {
         const asked = pluginData.variant ?? "auto";
-        const want = asked === "auto" ? (Theme.isLightMode ? "light" : "dark") : asked;
+        const fromProfile = (pluginData.skin ?? "auto") === "auto" ? profileVariant : "";
+        const want = asked === "auto" ? (fromProfile || (Theme.isLightMode ? "light" : "dark")) : asked;
         return skin.variants[want] ? want : "dark";
+    }
+    FileView {
+        id: profileFile
+        path: (SettingsData.currentThemeName === "custom" && SettingsData.customThemeFile) ? SettingsData.customThemeFile : ""
+        blockLoading: false
+        watchChanges: true
+        printErrors: false
+        function read() {
+            let eye = {};
+            try { eye = JSON.parse(profileFile.text()).vesperEye || {}; } catch (e) {}
+            root.profileSkin = eye.skin || "";
+            root.profileVariant = eye.variant || "";
+        }
+        onLoaded: read()
+        onFileChanged: reload()
+        onLoadFailed: { root.profileSkin = ""; root.profileVariant = ""; }
     }
     readonly property string preset: pluginData.preset ?? "calm"          // calm | lively | still
     readonly property bool reduced: preset === "still" || (pluginData.reducedMotion ?? false)
