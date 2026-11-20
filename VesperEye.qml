@@ -7,35 +7,44 @@ import qs.Common
 import qs.Services
 import qs.Modules.Plugins
 import "core"
+import "core/Acts.js" as Acts
 import "skins/SkinData.js" as Skins
 
 // Vesper Eye: глаз на рабочем столе. Этот файл только связывает оболочку с движком из core/:
-// настройки, положение на экране, уведомления, музыка, блокировка.
+// настройки, положение на экране, уведомления, блокировку, пульт и команды.
 DesktopPluginComponent {
     id: root
     property var screen: null
-    readonly property real defaultWidth: 1140
-    readonly property real defaultHeight: 540
+    readonly property real defaultWidth: 1220
+    readonly property real defaultHeight: 578
     minWidth: 285
     minHeight: 135
 
-    // Настройки экземпляра.
-    // Образ «по профилю»: файл темы оболочки может назвать образ глаза сам,
-    // полем "vesperEye": { "skin": "...", "variant": "dark" | "light" }. Тогда глаз меняется вместе с темой.
-    property string profileSkin: ""
+    // Образ называет тема оформления полем "vesperEye" в своём файле:
+    //   "skin": "keeper"  или  "skin": { "light": "<образ>", "dark": "<образ>" } — тогда кнопка режима оболочки меняет и рисунок, и характер;
+    //   "variant" — принудительный вариант цветов; "wallpapers": { "light", "dark" } — обои по режиму.
+    property var profileSkin: ""
     property string profileVariant: ""
+    property var profileWallpapers: null
+    readonly property string mode: Theme.isLightMode ? "light" : "dark"
     readonly property string skinId: {
         const asked = pluginData.skin ?? "auto";
-        const want = asked === "auto" ? profileSkin : asked;
+        let want = asked;
+        if (asked === "auto") want = typeof profileSkin === "string" ? profileSkin : (profileSkin ? (profileSkin[mode] || "") : "");
         return Skins.data.skins[want] ? want : Skins.data.order[0];
     }
     readonly property var skin: Skins.data.skins[skinId]
     readonly property string variant: {
         const asked = pluginData.variant ?? "auto";
-        const fromProfile = (pluginData.skin ?? "auto") === "auto" ? profileVariant : "";
-        const want = asked === "auto" ? (fromProfile || (Theme.isLightMode ? "light" : "dark")) : asked;
-        return skin.variants[want] ? want : "dark";
+        const want = asked === "auto" ? (profileVariant || mode) : asked;
+        return skin.variants[want] ? want : Object.keys(skin.variants)[0];
     }
+    function syncWallpaper() {
+        if (!profileWallpapers) return;
+        const want = Theme.isLightMode ? profileWallpapers.light : profileWallpapers.dark;
+        if (want && SessionData.wallpaperPath !== want) SessionData.setWallpaper(want);
+    }
+    Connections { target: Theme; function onIsLightModeChanged() { root.syncWallpaper(); } }
     FileView {
         id: profileFile
         path: (SettingsData.currentThemeName === "custom" && SettingsData.customThemeFile) ? SettingsData.customThemeFile : ""
@@ -47,20 +56,18 @@ DesktopPluginComponent {
             try { eye = JSON.parse(profileFile.text()).vesperEye || {}; } catch (e) {}
             root.profileSkin = eye.skin || "";
             root.profileVariant = eye.variant || "";
+            root.profileWallpapers = (eye.wallpapers && eye.wallpapers.light && eye.wallpapers.dark) ? eye.wallpapers : null;
+            root.themeTitle = eye.title || "";
+            root.syncWallpaper();
         }
         onLoaded: read()
         onFileChanged: reload()
-        onLoadFailed: { root.profileSkin = ""; root.profileVariant = ""; }
+        onLoadFailed: { root.profileSkin = ""; root.profileVariant = ""; root.profileWallpapers = null; }
     }
-    readonly property string preset: pluginData.preset ?? "calm"          // calm | lively | still
-    readonly property bool reduced: preset === "still" || (pluginData.reducedMotion ?? false)
-                                    || SettingsData.animationSpeed === SettingsData.AnimationSpeed.None
+    property string themeTitle: ""
+    readonly property bool reduced: (pluginData.reducedMotion ?? false) || SettingsData.animationSpeed === SettingsData.AnimationSpeed.None
     readonly property bool followCursor: pluginData.followCursor ?? true
-    readonly property int fpsCap: parseInt(pluginData.fpsCap ?? "60") || 0
-    readonly property var themeColors: (pluginData.followTheme ?? false) ? ({
-        "primary": Theme.primary, "secondary": Theme.secondary, "tertiary": Theme.tertiary, "surface": Theme.surface,
-        "surfaceText": Theme.surfaceText, "background": Theme.background, "outline": Theme.outline
-    }) : null
+    readonly property int fpsCap: parseInt(pluginData.fpsCap ?? "0") || 0      // 0 — как у экрана
 
     // Состояние хоста.
     readonly property bool hostVisible: visible && (Window.window?.visible ?? false)
@@ -73,49 +80,6 @@ DesktopPluginComponent {
         const m = host.WlrLayershell.margins;
         return Qt.point((screen?.x ?? 0) + m.left + p.x, (screen?.y ?? 0) + m.top + p.y);
     }
-    readonly property bool near: cursor.valid && presence.tracking && Math.hypot(gaze.targetDx, gaze.targetDy) < 1.1 * view.unit
-    property real nearness: near ? 1 : 0
-    Behavior on nearness { NumberAnimation { duration: 260; easing.type: Easing.InOutSine } }
-
-    // Музыка: общий анализатор оболочки, только по желанию и только пока что-то играет.
-    readonly property bool audioWanted: presence.tracking && !reduced && !presence.eco && (pluginData.music ?? false)
-                                        && (MprisController.activePlayer?.isPlaying ?? false)
-    property bool audioRegistered: false
-    property real amplitude: 0
-    function updateAudio() {
-        if (audioWanted === audioRegistered) return;
-        CavaService.refCount = Math.max(0, CavaService.refCount + (audioWanted ? 1 : -1));
-        audioRegistered = audioWanted;
-        if (!audioWanted) amplitude = 0;
-    }
-    onAudioWantedChanged: updateAudio()
-    Component.onCompleted: updateAudio()
-    Component.onDestruction: if (audioRegistered) CavaService.refCount = Math.max(0, CavaService.refCount - 1)
-
-    // Сигналы для образа «Связи»: есть ли сеть, поднят ли защищённый канал, рабочие столы.
-    readonly property bool online: (NetworkService.networkStatus ?? "disconnected") !== "disconnected"
-    property bool tunnelUp: false
-    readonly property string tunnelName: pluginData.tunnelInterface ?? ""
-    readonly property bool secure: (NetworkService.vpnConnected ?? false) || tunnelUp
-    readonly property int workspaceCount: {
-        const list = Hyprland.workspaces ? Hyprland.workspaces.values : [];
-        let top = 0;
-        for (let i = 0; i < list.length; i++) if (list[i].id > top) top = list[i].id;
-        return Math.min(10, top);
-    }
-    readonly property int workspaceActive: Hyprland.focusedWorkspace ? Hyprland.focusedWorkspace.id : 0
-    readonly property vector4d signals: Qt.vector4d(online ? 1 : 0, secure ? 1 : 0, workspaceActive, workspaceCount)
-    // Туннель вне NetworkManager (например, sing-box) виден только как сетевой интерфейс: сверяемся изредка.
-    FileView {
-        id: tunnelFile
-        path: root.tunnelName ? "/sys/class/net/" + root.tunnelName + "/ifindex" : ""
-        blockLoading: false
-        printErrors: false
-        onLoaded: root.tunnelUp = true
-        onLoadFailed: root.tunnelUp = false
-    }
-    Timer { interval: 60000; repeat: true; running: root.tunnelName !== "" && presence.awake; onTriggered: tunnelFile.reload() }
-    onOnlineChanged: if (tunnelName) tunnelFile.reload()
 
     // Защита OLED: раз в три минуты рисунок смещается на пару пикселей.
     property int driftStep: 0
@@ -123,8 +87,7 @@ DesktopPluginComponent {
     Timer { interval: 180000; repeat: true; running: presence.awake; onTriggered: root.driftStep = (root.driftStep + 1) % root.driftPath.length }
 
     property var lastPopup: null
-    readonly property alias behavior: behavior
-    readonly property alias gaze: gaze
+    readonly property alias life: life
     readonly property alias presence: presence
     readonly property alias view: view
     readonly property alias cursor: cursor
@@ -135,83 +98,70 @@ DesktopPluginComponent {
         locked: root.locked
         screen: root.screen
         eyeRect: Qt.rect(root.origin.x, root.origin.y, root.width, root.height)
+        eyeShape: root.skin.shape ?? null
         ecoSetting: root.pluginData.ecoMode ?? true
-        onAwakeChanged: if (awake) behavior.reveal()
-        onUserIdleChanged: if (!userIdle) behavior.activity()
-        onWorkspaceShift: direction => behavior.look(direction * 0.85, 0)
+        onWorkspaceShift: direction => life.look(direction * 0.85, 0, 900)
     }
     CursorSource {
         id: cursor
         active: presence.tracking && root.followCursor && !hover.hovered
         eco: presence.eco
-        onMoved: (x, y, speed) => { behavior.activity(); behavior.speed(speed); }
+        onMoved: (x, y, speed) => life.cursorMoved()
     }
     HoverHandler {
         id: hover
         enabled: presence.awake && root.followCursor
         onPointChanged: if (hovered) cursor.feed(root.origin.x + point.position.x, root.origin.y + point.position.y)
     }
-    Gaze {
-        id: gaze
+    Life {
+        id: life
         active: presence.awake
-        reducedMotion: root.reduced
-        unit: view.unit
-        omega: root.skin.motion?.omega ?? 20
-        fpsCap: root.fpsCap
-        hasTarget: cursor.valid && root.followCursor && !behavior.drowsy
-        targetDx: cursor.pointerX - (root.origin.x + root.width / 2)
-        targetDy: cursor.pointerY - (root.origin.y + root.height / 2)
-    }
-    Manner {
-        id: behavior
-        active: presence.awake
+        userIdle: presence.userIdle
         reducedMotion: root.reduced
         eco: presence.eco
-        lively: root.preset === "lively"
-        tired: presence.lowBattery
-        restLid: root.skin.restLid ?? 0
-        blinkClose: root.skin.motion?.blinkClose ?? 95
-        blinkHold: root.skin.motion?.blinkHold ?? 30
-        blinkOpen: root.skin.motion?.blinkOpen ?? 175
-        onGlance: (x, y) => { gaze.glanceX = x; gaze.glanceY = y; gaze.glancing = true; }
-        onMicroGlance: (x, y) => { gaze.glanceX = gaze.gazeX + x; gaze.glanceY = gaze.gazeY + y; gaze.glancing = true; }
-        onResume: gaze.glancing = false
+        showEnabled: root.pluginData.selfPlay ?? true
+        lowBattery: presence.lowBattery
+        onBattery: presence.onBattery
+        followCursor: root.followCursor
+        hasTarget: cursor.valid
+        targetDx: cursor.pointerX - (root.origin.x + root.width / 2)
+        targetDy: cursor.pointerY - (root.origin.y + root.height / 2)
+        hover: hover.hovered && view.containsPoint(hover.point.position.x, hover.point.position.y)
+        unit: view.unit
+        fpsCap: root.fpsCap
+        restLid: root.skin.restLid ?? 0.22
+        character: root.skin.character ?? ({})
+        visFrac: presence.visFrac
+        visX: presence.visX
+        visY: presence.visY
     }
+    // Сменился рисунок (другая тема или другой режим): глаз открывается заново, уже другим существом.
+    onSkinIdChanged: { life.wakeNow(); life.reveal(); }
     EyeView {
         id: view
         anchors.fill: parent
         skin: root.skin
         variant: root.variant
-        themeColors: root.themeColors
-        gazeX: gaze.gazeX
-        gazeY: gaze.gazeY
-        lagX: gaze.lagX
-        lagY: gaze.lagY
-        // Зрачок уже в светлой теме, расширяется от музыки и сужается, когда указатель совсем рядом.
-        pupil: behavior.pupilScale * (root.variant === "light" ? 0.9 : 1) * (1 + root.amplitude * 0.05) * (1 - 0.06 * root.nearness)
-        // Верхнее веко следует за взглядом: вниз — опускается, вверх — чуть приподнимается.
-        lidTop: Math.max(0, Math.min(1, behavior.lidTop + Math.max(0, gaze.gazeY) * 0.16 - Math.max(0, -gaze.gazeY) * 0.03))
-        lidBot: behavior.lidBot
-        energy: root.amplitude
-        wake: behavior.wake
-        pulse: behavior.pulse
-        pulseX: behavior.pulseX
-        pulseY: behavior.pulseY
-        dim: behavior.dim
-        signals: root.signals
+        gazeX: life.gazeX
+        gazeY: life.gazeY
+        lagX: life.lagX
+        lagY: life.lagY
+        pupil: life.pupil
+        lidTop: life.lidTop
+        lidBot: life.lidBot
+        wake: life.wake
+        pulse: life.pulse
+        dim: life.dim
+        mood: life.mood
+        face: life.face
+        pose: life.pose
+        time: life.clock
+        bobX: life.bobX
+        bobY: life.bobY
         driftX: root.driftPath[root.driftStep][0]
         driftY: root.driftPath[root.driftStep][1]
     }
 
-    Connections {
-        target: CavaService
-        enabled: root.audioWanted
-        function onValuesChanged() {
-            const values = CavaService.values;
-            const average = values.reduce((a, b) => a + (b || 0), 0) / Math.max(1, values.length) / 100;
-            root.amplitude += (Math.max(0, Math.min(1, average)) - root.amplitude) * 0.3;
-        }
-    }
     // Уведомление: взгляд в ту сторону, где оно всплыло. Текст не читается.
     Connections {
         target: NotificationService
@@ -225,11 +175,31 @@ DesktopPluginComponent {
             const left = pos === SettingsData.Position.Left || pos === SettingsData.Position.Bottom;
             const center = pos === -1 || pos === SettingsData.Position.TopCenter || pos === SettingsData.Position.BottomCenter;
             const bottom = pos === SettingsData.Position.Bottom || pos === SettingsData.Position.Right || pos === SettingsData.Position.BottomCenter;
-            behavior.notify(center ? 0 : left ? -1 : 1, bottom ? 0.45 : -0.45);
+            life.notify(center ? 0 : left ? -0.8 : 0.8, bottom ? 0.45 : -0.45);
+        }
+    }
+    // Новое окно на этом столе: взгляд в его сторону.
+    Connections {
+        target: Hyprland
+        enabled: presence.awake
+        function onRawEvent(event) {
+            if (event.name !== "openwindow") return;
+            openLook.restart();
+        }
+    }
+    Timer {
+        id: openLook
+        interval: 350                      // геометрия нового окна приходит с опозданием
+        onTriggered: {
+            const top = Hyprland.activeToplevel, o = top ? top.lastIpcObject : null;
+            if (!o || !o.at || !o.size) return;
+            const dx = o.at[0] + o.size[0] / 2 - (root.origin.x + root.width / 2), dy = o.at[1] + o.size[1] / 2 - (root.origin.y + root.height / 2);
+            const n = Math.hypot(dx, dy, 2.2 * view.unit);
+            life.notify(dx / n, dy / n);
         }
     }
 
-    // Удержание кнопки закрывает глаз, двойной щелчок удивляет. Попадание считается по форме глаза.
+    // Удержание кнопки закрывает глаз, двойной щелчок удивляет, средняя кнопка открывает и закрывает пульт.
     Item {
         id: hitMask
         anchors.fill: parent
@@ -238,15 +208,41 @@ DesktopPluginComponent {
     MouseArea {
         anchors.fill: parent
         containmentMask: hitMask
-        acceptedButtons: Qt.LeftButton
+        acceptedButtons: Qt.LeftButton | Qt.MiddleButton
         preventStealing: false
         enabled: presence.awake
         onPressed: mouse => {
+            if (mouse.button === Qt.MiddleButton) { root.pultOpen = !root.pultOpen; return; }
             if (mouse.modifiers & (Qt.ControlModifier | Qt.AltModifier | Qt.MetaModifier)) { mouse.accepted = false; return; }
-            behavior.press();
+            life.press();
         }
-        onReleased: behavior.release()
-        onCanceled: behavior.release()
-        onDoubleClicked: behavior.surprise()
+        onReleased: life.release()
+        onCanceled: life.release()
+        onDoubleClicked: mouse => { if (mouse.button === Qt.LeftButton) life.surprise(); }
+    }
+
+    // Пульт проверки номеров. Открыт, пока включён в настройках; крестик прячет его до команды или средней кнопки.
+    property bool pultOpen: pluginData.pult ?? false
+    readonly property var actList: Acts.listFor(root.skin.character ? root.skin.character.acts : null, root.skin.character ? root.skin.character.names : null)
+    LazyLoader {
+        active: root.pultOpen && root.hostVisible
+        Pult {
+            screen: root.screen
+            life: root.life
+            acts: root.actList
+            title: (root.themeTitle && root.themeTitle !== root.skin.title) ? root.themeTitle + " · " + root.skin.title : root.skin.title
+            subtitle: (Theme.isLightMode ? "светлая версия" : "тёмная версия") + " · " + root.actList.length + " номеров"
+            onCloseRequested: root.pultOpen = false
+        }
+    }
+    // Команды: dms ipc call vesperEye play laugh | acts | pult | sleep | wake
+    IpcHandler {
+        target: "vesperEye"
+        function play(name: string): string { return life.demo(name) ? "ok" : "нет такого номера; список: dms ipc call vesperEye acts"; }
+        function acts(): string { return root.actList.map(a => a.id + " — " + a.name).join("\n"); }
+        function pult(): string { root.pultOpen = !root.pultOpen; return root.pultOpen ? "пульт открыт" : "пульт закрыт"; }
+        function sleep(): string { life.sleepNow(); return "ok"; }
+        function wake(): string { life.wakeNow(); return "ok"; }
+        function state(): string { return root.skinId + " " + root.variant + " " + (life.asleep ? "спит" : life.dozing ? "дремлет" : life.actName || "бодрствует") + " " + Math.round(life.energy * 100) + "%"; }
     }
 }

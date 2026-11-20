@@ -1,0 +1,91 @@
+{
+  "title": "Архив II",
+  "note": "Второй глаз, Vesper Eye 0.1, осень 2026 года: костяной белок, гранатовая радужка, тонкий контур. Оставлен на память.",
+  "shader": "archive2",
+  "irisRadius": 0.804,
+  "restLid": 0.04,
+  "shape": {
+    "type": "lens",
+    "w": 2.8,
+    "hu": 0.66,
+    "hl": 0.66
+  },
+  "character": {
+    "plain": true,
+    "dozeAfter": 120,
+    "drowsyLid": 0.95,
+    "actGap": [
+      9000,
+      20000
+    ],
+    "tempo": 1.0,
+    "omega": 0.8,
+    "lag": 0.02,
+    "blink": [
+      4000,
+      9000
+    ],
+    "blinkKind": "lid",
+    "acts": {
+      "sweep": 1
+    }
+  },
+  "themeMap": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "variants": {
+    "dark": {
+      "title": "Как был",
+      "page": {
+        "bg": "#0D0B10",
+        "surface": "#17121A",
+        "text": "#E8DDCF",
+        "muted": "#B6A6B1",
+        "a1": "#CC6B7C",
+        "a2": "#C6A36D",
+        "a3": "#83AAA1",
+        "outline": "#574650"
+      },
+      "colors": [
+        "#17121A",
+        "#C3B4A4",
+        "#75263D",
+        "#08070B",
+        "#F6E8DE",
+        "#CFC3BC",
+        "#AA3758",
+        "#451624"
+      ]
+    },
+    "light": {
+      "title": "Светлый",
+      "page": {
+        "bg": "#EDE5DA",
+        "surface": "#F8F3EB",
+        "text": "#1E1519",
+        "muted": "#6F6166",
+        "a1": "#8A2D48",
+        "a2": "#8A6A2F",
+        "a3": "#3F7468",
+        "outline": "#C9BBAE"
+      },
+      "colors": [
+        "#E2D7CA",
+        "#FBF6EE",
+        "#8A2D48",
+        "#140E12",
+        "#FFF8F0",
+        "#5A4640",
+        "#C24D6E",
+        "#541B2D"
+      ]
+    }
+  }
+}

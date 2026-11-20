@@ -16,6 +16,7 @@ Item {
     property var screen: null
     property rect eyeRect: Qt.rect(0, 0, 0, 0)     // глаз в координатах рабочего стола
     property bool ecoSetting: true
+    property var eyeShape: null                    // форма глаза из образа: для расчёта покрытия
 
     readonly property bool hypr: Quickshell.env("HYPRLAND_INSTANCE_SIGNATURE") !== ""
     readonly property bool onBattery: UPower.onBattery
@@ -25,6 +26,10 @@ Item {
     property bool covered: false
     property bool windowsAround: false
     property real coverage: 0
+    // Видимая часть глаза и её середина в единицах глаза: туда переезжает зрачок.
+    property real visFrac: 1
+    property real visX: 0
+    property real visY: 0
     readonly property bool awake: hostVisible && !locked && !covered
     readonly property bool tracking: awake && !userIdle
     readonly property bool eco: ecoSetting || onBattery
@@ -49,9 +54,9 @@ Item {
     // Глаз считается закрытым, если окна активного рабочего стола закрывают его почти целиком.
     // Сведения о геометрии окон могут запаздывать, поэтому любая неясность трактуется как «виден».
     function recompute() {
-        if (!hypr || !screen || eyeRect.width <= 0) { covered = false; windowsAround = false; coverage = 0; return; }
+        if (!hypr || !screen || eyeRect.width <= 0) { covered = false; windowsAround = false; coverage = 0; visFrac = 1; return; }
         const monitor = Hyprland.monitorFor(screen);
-        if (!monitor) { covered = false; windowsAround = false; coverage = 0; return; }
+        if (!monitor) { covered = false; windowsAround = false; coverage = 0; visFrac = 1; return; }
         const rects = [];
         let full = windowsOn(monitor.activeWorkspace, rects);
         const special = monitor.lastIpcObject && monitor.lastIpcObject.specialWorkspace ? monitor.lastIpcObject.specialWorkspace.name : "";
@@ -60,8 +65,10 @@ Item {
             for (let i = 0; i < all.length; i++) if (all[i].name === special) full = windowsOn(all[i], rects) || full;
         }
         windowsAround = rects.length > 0;
-        coverage = full ? 1 : Geo.coverage(eyeRect, rects);
+        coverage = full ? 1 : Geo.coverage(eyeRect, rects, eyeShape);
         covered = coverage >= 0.85;
+        const vis = full ? { f: 0, x: 0, y: 0 } : Geo.visible(eyeRect, rects, eyeShape);
+        visFrac = vis.f; visX = vis.x; visY = vis.y;
     }
     function refresh() {
         if (!hypr) return;
@@ -70,6 +77,7 @@ Item {
     }
     onScreenChanged: refresh()
     onEyeRectChanged: debounce.restart()
+    onEyeShapeChanged: debounce.restart()
     onHostVisibleChanged: if (hostVisible) refresh()
     Component.onCompleted: refresh()
 
@@ -77,7 +85,7 @@ Item {
     Timer { id: early; interval: 150; onTriggered: root.recompute() }
     Timer { id: late; interval: 600; onTriggered: root.recompute() }
     // Перетаскивание и изменение размера окна событий не дают: пока рядом есть окна, изредка сверяемся.
-    Timer { interval: 4000; repeat: true; running: root.hypr && root.hostVisible && !root.locked && root.windowsAround && !root.userIdle; onTriggered: root.refresh() }
+    Timer { interval: root.coverage > 0.02 && root.coverage < 0.85 ? 700 : 4000; repeat: true; running: root.hypr && root.hostVisible && !root.locked && root.windowsAround && !root.userIdle; onTriggered: root.refresh() }
 
     Connections {
         target: Hyprland

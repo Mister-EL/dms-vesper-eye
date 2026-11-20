@@ -29,6 +29,9 @@ layout(std140, binding = 0) uniform buf {
     vec4 uC7;
     vec4 uP0;
     vec4 uP1;
+    vec4 uMood;
+    vec4 uFace;
+    vec4 uPose;
 } ubuf;
 #define uTime ubuf.uTime
 #define uSize ubuf.uSize
@@ -54,3 +57,6 @@ layout(std140, binding = 0) uniform buf {
 #define uC7 ubuf.uC7
 #define uP0 ubuf.uP0
 #define uP1 ubuf.uP1
+#define uMood ubuf.uMood
+#define uFace ubuf.uFace
+#define uPose ubuf.uPose

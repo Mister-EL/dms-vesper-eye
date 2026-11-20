@@ -26,3 +26,6 @@ uniform vec4 uC6;
 uniform vec4 uC7;
 uniform vec4 uP0;
 uniform vec4 uP1;
+uniform vec4 uMood;
+uniform vec4 uFace;
+uniform vec4 uPose;

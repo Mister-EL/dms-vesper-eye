@@ -7,39 +7,26 @@ PluginSettings {
     SelectionSetting {
         settingKey: "skin"
         label: qsTr("Образ")
-        description: qsTr("Внешний вид глаза")
-        options: [{ "label": qsTr("По профилю оформления"), "value": "auto" }].concat(Skins.data.order.map(id => ({ "label": Skins.data.skins[id].title, "value": id })))
+        description: qsTr("«По теме оформления» — образ называет файл темы оболочки; если там его нет, берётся первый из списка")
+        options: [{ "label": qsTr("По теме оформления"), "value": "auto" }].concat(Skins.data.order.map(id => ({ "label": Skins.data.skins[id].title, "value": id })))
         defaultValue: "auto"
     }
     SelectionSetting {
         settingKey: "variant"
         label: qsTr("Вариант")
-        description: qsTr("Тёмный или светлый; не у каждого образа есть оба")
-        options: [{ "label": qsTr("По теме оболочки"), "value": "auto" }, { "label": qsTr("Тёмный"), "value": "dark" }, { "label": qsTr("Светлый"), "value": "light" }]
+        description: qsTr("Светлая или тёмная версия рисунка")
+        options: [{ "label": qsTr("По теме оформления"), "value": "auto" }, { "label": qsTr("Светлая"), "value": "light" }, { "label": qsTr("Тёмная"), "value": "dark" }]
         defaultValue: "auto"
     }
-    SelectionSetting {
-        settingKey: "preset"
-        label: qsTr("Характер")
-        options: [{ "label": qsTr("Спокойный"), "value": "calm" }, { "label": qsTr("Живой: редкие осмотры и микродвижения"), "value": "lively" }, { "label": qsTr("Неподвижный"), "value": "still" }]
-        defaultValue: "calm"
-    }
-    ToggleSetting { settingKey: "followTheme"; label: qsTr("Цвета из темы оболочки"); defaultValue: false }
+    ToggleSetting { settingKey: "pult"; label: qsTr("Пульт проверки номеров"); description: qsTr("Окно с кнопками в углу экрана; ещё открывается средней кнопкой по глазу"); defaultValue: false }
+    ToggleSetting { settingKey: "selfPlay"; label: qsTr("Развлекать себя, пока вы ничего не делаете"); description: qsTr("Десять минут от сети, три от батареи; потом засыпает. Архивные глаза только посматривают по сторонам и дремлют"); defaultValue: true }
     ToggleSetting { settingKey: "followCursor"; label: qsTr("Следить за указателем"); defaultValue: true }
     ToggleSetting { settingKey: "notifications"; label: qsTr("Взгляд на уведомления"); defaultValue: true }
-    ToggleSetting { settingKey: "music"; label: qsTr("Реакция на музыку (выключена на батарее)"); defaultValue: false }
-    StringSetting {
-        settingKey: "tunnelInterface"
-        label: qsTr("Интерфейс туннеля")
-        description: qsTr("Имя сетевого интерфейса VPN вне NetworkManager, например singbox_tun; образ «Связи» покажет второй контур")
-        placeholder: "singbox_tun"
-        defaultValue: ""
-    }
-    ToggleSetting { settingKey: "ecoMode"; label: qsTr("Экономичный режим"); defaultValue: true }
+    ToggleSetting { settingKey: "ecoMode"; label: qsTr("Экономичный режим"); description: qsTr("Без дыхания и мелких подрагиваний, когда взгляд стоит"); defaultValue: true }
     SelectionSetting {
         settingKey: "fpsCap"
-        label: qsTr("Предел кадров при движении")
+        label: qsTr("Предел кадров")
         options: [{ "label": "30", "value": "30" }, { "label": "60", "value": "60" }, { "label": qsTr("Как у экрана"), "value": "0" }]
-        defaultValue: "60"
+        defaultValue: "0"
     }
 }

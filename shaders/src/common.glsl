@@ -101,3 +101,67 @@ vec2 irisUV(vec2 q, vec2 c, float rI) {
 
 // Наложение источника с предумноженной альфой поверх накопленного цвета.
 vec4 over(vec4 dst, vec3 rgb, float a) { return vec4(dst.rgb * (1.0 - a) + rgb * a, dst.a * (1.0 - a) + a); }
+
+// ---- Общая анатомия образов, построенных на глазе «Смотрителя» ----
+// geo = (полуширина раскрытия, высота верхней дуги, высота нижней дуги, линия смыкания век).
+// Высота «домика» над точкой x (печаль): вершина в (0, k), скаты провисают к уголкам.
+float eyTentY(float x, float k, float wi) {
+    const float a = 0.50;
+    float s = (sqrt(x * x + a * a) - a) / (sqrt(wi * wi + a * a) - a);
+    return k * (1.0 - pow(clamp(s, 0.0, 1.0), 0.72));
+}
+// Кромка верхнего века: дуга через уголки с вершиной в (0, k); печаль складывает её «домиком».
+float eyTop(vec2 p, float wi, float k, float sad) {
+    float d = arcBelow(p, wi, k);
+    if (sad < 0.001 || k > -0.05) return d;
+    float kt = k - 0.12;
+    float y = eyTentY(p.x, kt, wi);
+    float dy = (eyTentY(p.x + 0.02, kt, wi) - eyTentY(p.x - 0.02, kt, wi)) / 0.04;
+    return mix(d, (p.y - y) / sqrt(1.0 + dy * dy), sad);
+}
+// Кромки век с мимикой: dTop > 0 ниже верхнего века, dBot > 0 выше нижнего; xs — координата вдоль верхнего
+// века с учётом перекоса. lt и lb — насколько закрыты веки.
+void eyLids(vec2 q, vec4 geo, float lt, float lb, out float dTop, out float dBot, out float xs) {
+    float t = q.x / geo.x;
+    xs = q.x - clamp(uFace.x, -1.0, 1.0) * 0.36 * geo.x * max(0.0, 1.0 - t * t);
+    dTop = eyTop(vec2(xs, q.y), geo.x, mix(-geo.y, geo.w, lt), clamp(uFace.z, 0.0, 1.0) * (1.0 - smoothstep(0.45, 0.85, lt)));
+    dBot = -arcBelow(q, geo.x, mix(geo.z, geo.w, lb) - clamp(uFace.y, 0.0, 1.0) * 1.25 * geo.z * (1.0 - lb));
+}
+// Радужка: яблоко поворачивается (диск сплющен вдоль взгляда), на быстром взгляде диск чуть вытянут,
+// зрачок внутри радужки сдвинут в сторону взгляда. c — центр на экране, u — координаты в радиусах радужки,
+// up — координаты от центра зрачка.
+void eyIris(vec2 q, vec2 travel, float y0, float rI, out vec2 c, out vec2 u, out vec2 up) {
+    c = irisCenter(uGaze, travel, y0);
+    vec2 smear = c - irisCenter(uGaze2, travel, y0);
+    float speed = length(smear);
+    u = irisUV(q, c, rI);
+    vec2 gz = uGaze * vec2(1.0, 0.5);
+    float turn = min(length(gz), 1.0);
+    if (turn > 0.001) {
+        vec2 d = gz / length(gz);
+        u += d * dot(u, d) * (1.0 / mix(1.0, 0.84, turn * turn) - 1.0);
+    }
+    if (speed > 0.0005) {
+        vec2 d = smear / speed;
+        float k = 1.0 + min(speed * 0.40, 0.08);
+        float par = dot(u, d);
+        u = d * (par / k) + (u - d * par) * sqrt(k);
+    }
+    vec2 pc = uGaze * vec2(0.22, 0.13) + (uGaze2 - uGaze) * vec2(0.10, 0.06);
+    up = u - pc * (1.0 - smoothstep(0.62, 1.0, length(u)));
+}
+// Лист или пучок шерсти: капля вдоль оси x от основания (0, 0) длиной len, наибольшая полуширина wd
+// на трети длины, остриё на конце. v — точка в осях капли. t — доля длины. Расстояние приближённое.
+float eyDrop(vec2 v, float len, float wd, out float t) {
+    t = clamp(v.x / len, 0.0, 1.0);
+    float prof = wd * pow(max(sin(PI * pow(t, 0.62)), 0.0), 0.85);
+    float d = abs(v.y) - prof;
+    if (v.x < 0.0) d = max(d, -v.x);
+    if (v.x > len) d = length(v - vec2(len, 0.0));
+    return d;
+}
+// Четырёхлучевая звёздочка радиуса r: расстояние меньше нуля внутри.
+float eyStar(vec2 v, float r) {
+    v = abs(v);
+    return (pow(v.x, 0.55) + pow(v.y, 0.55)) - pow(r, 0.55);
+}

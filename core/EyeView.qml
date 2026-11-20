@@ -22,8 +22,12 @@ Item {
     property real pulseY: 0
     property real dim: 1
     property real time: 0
-    // Сигналы машины для образов, которые их показывают: сеть, защищённый канал, рабочие столы.
-    property var signals: null
+    property vector4d mood: Qt.vector4d(0, 0, 0, 0)     // тревога, усталость, закрутка, влага
+    property vector4d face: Qt.vector4d(0, 0, 0, 0)     // перекос века, улыбка, печаль
+    property vector4d pose: Qt.vector4d(0, 0, 0, 0)     // жест придатков, «спрятался», третье веко, выпученность
+    // Сдвиг всего глаза в единицах: смех, дрожь, «клюёт носом».
+    property real bobX: 0
+    property real bobY: 0
     // Сдвиг рисунка на несколько пикселей: защита OLED от выгорания.
     property real driftX: 0
     property real driftY: 0
@@ -35,7 +39,7 @@ Item {
     Accessible.ignored: true
 
     function containsPoint(px, py) {
-        return Geo.inLens((px - width / 2 - driftX) / unit, (py - height / 2 - driftY) / unit, 4 / unit);
+        return Geo.inside(skin ? skin.shape : null, (px - width / 2 - driftX - bobX * unit) / unit, (py - height / 2 - driftY - bobY * unit) / unit, 4 / unit);
     }
     function slot(i) {
         if (!look) return Qt.vector4d(0, 0, 0, 1);
@@ -52,8 +56,8 @@ Item {
 
     ShaderEffect {
         id: fx
-        x: root.driftX
-        y: root.driftY
+        x: root.driftX + root.bobX * root.unit
+        y: root.driftY + root.bobY * root.unit
         width: root.width
         height: root.height
         visible: root.skin !== null
@@ -80,8 +84,11 @@ Item {
         property vector4d uC5: root.slot(5)
         property vector4d uC6: root.slot(6)
         property vector4d uC7: root.slot(7)
-        property vector4d uP0: (root.signals && root.skin && root.skin.signals) ? root.signals : root.param("p0")
+        property vector4d uP0: root.param("p0")
         property vector4d uP1: root.param("p1")
+        property vector4d uMood: root.mood
+        property vector4d uFace: root.face
+        property vector4d uPose: root.pose
         fragmentShader: root.skin ? Qt.resolvedUrl("../shaders/" + root.skin.shader + ".frag.qsb") : ""
         onStatusChanged: {
             if (status === ShaderEffect.Error) console.warn("VesperEye: шейдер образа не собрался:", log);

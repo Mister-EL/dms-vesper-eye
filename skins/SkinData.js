@@ -2,228 +2,163 @@
 // Создано tools/build.py из skins/*.json. Руками не править.
 var data = {
  "order": [
-  "nexus",
-  "pearl",
-  "signal",
-  "neon",
-  "eclipse",
-  "vesper"
+  "keeper",
+  "archive1",
+  "archive2"
  ],
  "skins": {
-  "nexus": {
-   "title": "Связи",
-   "note": "Объёмный шар из узлов и связей: поворачивается за указателем и показывает связи самой машины.",
-   "shader": "nexus",
-   "irisRadius": 0.58,
-   "restLid": 0.0,
-   "signals": true,
+  "keeper": {
+   "title": "Смотритель",
+   "note": "Трафаретная печать в три краски: красный, чёрный и костяной. Светлый вариант — на бумаге, тёмный — на красном листе.",
+   "shader": "poster",
+   "irisRadius": 0.86,
+   "restLid": 0.2,
    "motion": {
-    "omega": 16,
-    "blinkClose": 90,
-    "blinkHold": 40,
-    "blinkOpen": 220
-   },
-   "themeMap": [
-    "primary",
-    "surfaceText",
-    "secondary",
-    "tertiary",
-    "primary",
-    "outline",
-    "primary",
-    "surfaceText"
-   ],
-   "variants": {
-    "dark": {
-     "title": "Ночь",
-     "page": {
-      "bg": "#02050A",
-      "surface": "#0A111D",
-      "text": "#E6EEFA",
-      "muted": "#93A8C9",
-      "a1": "#5CC8FF",
-      "a2": "#FFB454",
-      "a3": "#7AF0D0",
-      "outline": "#4A6088"
-     },
-     "colors": [
-      "#5CC8FF",
-      "#EAF4FF",
-      "#FFB454",
-      "#7AF0D0",
-      "#3A8FD6",
-      "#8FB6E0",
-      "#3F7FB8",
-      "#DCEBFF"
-     ],
-     "p0": [
-      1,
-      0,
-      2,
-      5
-     ]
-    }
-   }
-  },
-  "pearl": {
-   "title": "Перламутр",
-   "note": "Пастель: белый, розовый, голубой. Опаловая радужка с переливом.",
-   "shader": "pearl",
-   "irisRadius": 0.9,
-   "motion": {
-    "omega": 17,
-    "blinkClose": 110,
-    "blinkHold": 40,
-    "blinkOpen": 240
-   },
-   "variants": {
-    "dark": {
-     "title": "Сумерки",
-     "page": {
-      "bg": "#0C0A12",
-      "surface": "#15121E",
-      "text": "#F3EDF6",
-      "muted": "#B9B0CC",
-      "a1": "#F5A8C6",
-      "a2": "#A8D2F5",
-      "a3": "#CDBEF5",
-      "outline": "#6F6788"
-     },
-     "colors": [
-      "#FBF6FA",
-      "#CBBFE2",
-      "#8EC5F2",
-      "#C7B5F1",
-      "#F3A6C6",
-      "#2F2A45",
-      "#17131F",
-      "#E9B8A6"
-     ]
-    },
-    "light": {
-     "title": "День",
-     "page": {
-      "bg": "#F8F4F6",
-      "surface": "#FFFFFF",
-      "text": "#2F2A45",
-      "muted": "#6A6382",
-      "a1": "#B84877",
-      "a2": "#3674B4",
-      "a3": "#6F5CB8",
-      "outline": "#B9ACC0"
-     },
-     "colors": [
-      "#FDFBFC",
-      "#D6CBE8",
-      "#8EC5F2",
-      "#C7B5F1",
-      "#F3A6C6",
-      "#2F2A45",
-      "#FBF7F8",
-      "#E9B8A6"
-     ]
-    }
-   },
-   "restLid": 0.1,
-   "themeMap": [
-    "",
-    "",
-    "secondary",
-    "tertiary",
-    "primary",
-    "",
-    "surface",
-    "primary"
-   ]
-  },
-  "signal": {
-   "title": "Сигнал",
-   "note": "Чёрный, белый, серый и одна ярко-зелёная радужка. Чертёж и прибор.",
-   "shader": "signal",
-   "irisRadius": 0.74,
-   "restLid": 0.0,
-   "motion": {
-    "omega": 30,
-    "blinkClose": 60,
-    "blinkHold": 20,
-    "blinkOpen": 120
-   },
-   "themeMap": [
-    "surfaceText",
-    "",
-    "primary",
-    "",
-    "",
-    "outline",
-    "",
-    "primary"
-   ],
-   "variants": {
-    "dark": {
-     "title": "Ночь",
-     "page": {
-      "bg": "#000000",
-      "surface": "#0E0E10",
-      "text": "#F4F4F5",
-      "muted": "#A1A1AA",
-      "a1": "#3DFF6E",
-      "a2": "#D4D4D8",
-      "a3": "#8E8E96",
-      "outline": "#5E5E66"
-     },
-     "colors": [
-      "#F4F4F5",
-      "#000000",
-      "#3DFF6E",
-      "#000000",
-      "#FFFFFF",
-      "#6B6B73",
-      "#000000",
-      "#1F8A3C"
-     ]
-    },
-    "light": {
-     "title": "Бумага",
-     "page": {
-      "bg": "#EDEDEE",
-      "surface": "#FFFFFF",
-      "text": "#0B0B0C",
-      "muted": "#55555C",
-      "a1": "#008A34",
-      "a2": "#3F3F46",
-      "a3": "#71717A",
-      "outline": "#8A8A93"
-     },
-     "colors": [
-      "#0B0B0C",
-      "#FFFFFF",
-      "#3DFF6E",
-      "#0B0B0C",
-      "#FFFFFF",
-      "#8A8A93",
-      "#EDEDEE",
-      "#1F8A3C"
-     ]
-    }
-   }
-  },
-  "neon": {
-   "title": "Неон-нуар",
-   "note": "Киберпанк: оптический имплант с диафрагмой. Циан и маджента на чёрном стекле.",
-   "shader": "neon",
-   "irisRadius": 0.74,
-   "restLid": 0.0,
-   "motion": {
-    "omega": 26,
-    "blinkClose": 70,
-    "blinkHold": 30,
+    "omega": 22,
+    "blinkClose": 75,
+    "blinkHold": 45,
     "blinkOpen": 150
    },
    "themeMap": [
     "",
-    "secondary",
-    "primary",
-    "tertiary",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+   ],
+   "variants": {
+    "light": {
+     "title": "На бумаге",
+     "page": {
+      "bg": "#E6DCC8",
+      "surface": "#F5EEE1",
+      "text": "#140A0A",
+      "muted": "#4A4038",
+      "a1": "#B3151C",
+      "a2": "#140A0A",
+      "a3": "#8F1218",
+      "outline": "#8C7F6C"
+     },
+     "colors": [
+      "#E6DCC8",
+      "#FDFAF2",
+      "#C4161C",
+      "#0A0505",
+      "#FDFAF2",
+      "#0A0505",
+      "#C4161C",
+      "#0A0505"
+     ],
+     "p1": [
+      0,
+      1,
+      0,
+      0
+     ]
+    },
+    "dark": {
+     "title": "На красном",
+     "page": {
+      "bg": "#B4151C",
+      "surface": "#120909",
+      "text": "#ECE3D2",
+      "muted": "#B5AA98",
+      "a1": "#E23A40",
+      "a2": "#ECE3D2",
+      "a3": "#8F1218",
+      "outline": "#6B4A46"
+     },
+     "colors": [
+      "#B4151C",
+      "#ECE3D2",
+      "#0A0505",
+      "#0A0505",
+      "#ECE3D2",
+      "#0A0505",
+      "#760B11",
+      "#B4151C"
+     ],
+     "p1": [
+      0,
+      0,
+      0,
+      0
+     ]
+    }
+   },
+   "shape": {
+    "type": "lens"
+   },
+   "character": {
+    "tempo": 1.0,
+    "omega": 1.0,
+    "lag": 0,
+    "blink": [
+     2600,
+     6800
+    ],
+    "blinkKind": "lid",
+    "acts": {
+     "laugh": 3,
+     "surprise": 2.5,
+     "fear": 2,
+     "angry": 2,
+     "sad": 2.5,
+     "disgust": 2,
+     "fly": 3,
+     "hunt": 2.5,
+     "contest": 2,
+     "spin": 2,
+     "roll": 2,
+     "suspect": 2,
+     "around": 2.5,
+     "dream": 2.5,
+     "yawn": 3,
+     "nod": 4,
+     "shake": 2
+    }
+   }
+  },
+  "archive1": {
+   "title": "Архив I",
+   "note": "Самый первый глаз, январь 2026 года: три ровных пятна, веки цвета фона. Оставлен на память.",
+   "shader": "archive1",
+   "irisRadius": 0.905,
+   "restLid": 0.05,
+   "shape": {
+    "type": "lens",
+    "w": 2.8,
+    "hu": 0.72,
+    "hl": 0.72
+   },
+   "character": {
+    "plain": true,
+    "dozeAfter": 120,
+    "drowsyLid": 0.95,
+    "actGap": [
+     9000,
+     20000
+    ],
+    "tempo": 1.0,
+    "omega": 0.8,
+    "lag": 0.02,
+    "blink": [
+     4000,
+     9000
+    ],
+    "blinkKind": "lid",
+    "acts": {
+     "sweep": 1
+    }
+   },
+   "themeMap": [
+    "",
+    "",
+    "",
+    "",
     "",
     "",
     "",
@@ -231,103 +166,98 @@ var data = {
    ],
    "variants": {
     "dark": {
-     "title": "Ночной город",
+     "title": "Как был",
      "page": {
-      "bg": "#05030A",
-      "surface": "#0E0818",
-      "text": "#ECE8FF",
-      "muted": "#A99FD0",
-      "a1": "#FF3D9A",
-      "a2": "#2DE2FF",
-      "a3": "#FFE45C",
-      "outline": "#5B4A86"
+      "bg": "#151410",
+      "surface": "#1D1B17",
+      "text": "#EDE6E0",
+      "muted": "#9A938C",
+      "a1": "#F39C9E",
+      "a2": "#7FD6B2",
+      "a3": "#C9B7AE",
+      "outline": "#3D3532"
      },
      "colors": [
-      "#0E0818",
-      "#2DE2FF",
-      "#FF3D9A",
-      "#8A5CFF",
-      "#FFE45C",
-      "#FF2D55",
-      "#0B0714",
-      "#2A2148"
+      "#151410",
+      "#3D3532",
+      "#F39C9E",
+      "#F4EEEE",
+      "#F4EEEE",
+      "#3D3532",
+      "#3D3532",
+      "#F39C9E"
+     ]
+    },
+    "light": {
+     "title": "Светлый",
+     "page": {
+      "bg": "#F1ECE6",
+      "surface": "#FAF7F3",
+      "text": "#221E1B",
+      "muted": "#6E655E",
+      "a1": "#C2535E",
+      "a2": "#2F8A68",
+      "a3": "#7A6257",
+      "outline": "#CFC5BC"
+     },
+     "colors": [
+      "#F1ECE6",
+      "#DDD3CB",
+      "#EE8C93",
+      "#1F1B19",
+      "#1F1B19",
+      "#DDD3CB",
+      "#DDD3CB",
+      "#EE8C93"
      ]
     }
    }
   },
-  "eclipse": {
-   "title": "Затмение",
-   "note": "Полное солнечное затмение: чёрный диск Луны, жемчужная корона и серп Солнца при взгляде в сторону.",
-   "shader": "eclipse",
-   "irisRadius": 0.9,
-   "restLid": 0.08,
-   "motion": {
-    "omega": 14,
-    "blinkClose": 130,
-    "blinkHold": 50,
-    "blinkOpen": 280
+  "archive2": {
+   "title": "Архив II",
+   "note": "Второй глаз, Vesper Eye 0.1, осень 2026 года: костяной белок, гранатовая радужка, тонкий контур. Оставлен на память.",
+   "shader": "archive2",
+   "irisRadius": 0.804,
+   "restLid": 0.04,
+   "shape": {
+    "type": "lens",
+    "w": 2.8,
+    "hu": 0.66,
+    "hl": 0.66
+   },
+   "character": {
+    "plain": true,
+    "dozeAfter": 120,
+    "drowsyLid": 0.95,
+    "actGap": [
+     9000,
+     20000
+    ],
+    "tempo": 1.0,
+    "omega": 0.8,
+    "lag": 0.02,
+    "blink": [
+     4000,
+     9000
+    ],
+    "blinkKind": "lid",
+    "acts": {
+     "sweep": 1
+    }
    },
    "themeMap": [
     "",
     "",
-    "primary",
     "",
     "",
     "",
-    "tertiary",
+    "",
+    "",
     ""
    ],
    "variants": {
     "dark": {
-     "title": "Полная фаза",
-     "page": {
-      "bg": "#000000",
-      "surface": "#0A0B10",
-      "text": "#F1EEE6",
-      "muted": "#A5A7B5",
-      "a1": "#F3DDAA",
-      "a2": "#FF6F8B",
-      "a3": "#9DB4FF",
-      "outline": "#5F6274"
-     },
-     "colors": [
-      "#F6F1E7",
-      "#F3DDAA",
-      "#FF5E7E",
-      "#0B1020",
-      "#020308",
-      "#000000",
-      "#9DB4FF",
-      "#04050A"
-     ]
-    }
-   }
-  },
-  "vesper": {
-   "title": "Веспер",
-   "note": "Прежний готический вид: винный гранат, кость и потемневшая латунь.",
-   "shader": "vesper",
-   "irisRadius": 0.92,
-   "restLid": 0.1,
-   "motion": {
-    "omega": 20,
-    "blinkClose": 95,
-    "blinkHold": 30,
-    "blinkOpen": 175
-   },
-   "themeMap": [
-    "",
-    "",
-    "",
-    "primary",
-    "secondary",
-    "",
-    "surface",
-    "primary"
-   ],
-   "variants": {
-    "dark": {
-     "title": "Sanguine Ivory",
+     "title": "Как был",
      "page": {
       "bg": "#0D0B10",
       "surface": "#17121A",
@@ -335,18 +265,41 @@ var data = {
       "muted": "#B6A6B1",
       "a1": "#CC6B7C",
       "a2": "#C6A36D",
-      "a3": "#A28DB8",
-      "outline": "#796572"
+      "a3": "#83AAA1",
+      "outline": "#574650"
      },
      "colors": [
-      "#D2C4AE",
-      "#6B5960",
-      "#2A0F1A",
-      "#8A324C",
-      "#C6A36D",
-      "#08070B",
       "#17121A",
-      "#CC6B7C"
+      "#C3B4A4",
+      "#75263D",
+      "#08070B",
+      "#F6E8DE",
+      "#CFC3BC",
+      "#AA3758",
+      "#451624"
+     ]
+    },
+    "light": {
+     "title": "Светлый",
+     "page": {
+      "bg": "#EDE5DA",
+      "surface": "#F8F3EB",
+      "text": "#1E1519",
+      "muted": "#6F6166",
+      "a1": "#8A2D48",
+      "a2": "#8A6A2F",
+      "a3": "#3F7468",
+      "outline": "#C9BBAE"
+     },
+     "colors": [
+      "#E2D7CA",
+      "#FBF6EE",
+      "#8A2D48",
+      "#140E12",
+      "#FFF8F0",
+      "#5A4640",
+      "#C24D6E",
+      "#541B2D"
      ]
     }
    }

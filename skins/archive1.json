@@ -1,0 +1,91 @@
+{
+  "title": "Архив I",
+  "note": "Самый первый глаз, январь 2026 года: три ровных пятна, веки цвета фона. Оставлен на память.",
+  "shader": "archive1",
+  "irisRadius": 0.905,
+  "restLid": 0.05,
+  "shape": {
+    "type": "lens",
+    "w": 2.8,
+    "hu": 0.72,
+    "hl": 0.72
+  },
+  "character": {
+    "plain": true,
+    "dozeAfter": 120,
+    "drowsyLid": 0.95,
+    "actGap": [
+      9000,
+      20000
+    ],
+    "tempo": 1.0,
+    "omega": 0.8,
+    "lag": 0.02,
+    "blink": [
+      4000,
+      9000
+    ],
+    "blinkKind": "lid",
+    "acts": {
+      "sweep": 1
+    }
+  },
+  "themeMap": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "variants": {
+    "dark": {
+      "title": "Как был",
+      "page": {
+        "bg": "#151410",
+        "surface": "#1D1B17",
+        "text": "#EDE6E0",
+        "muted": "#9A938C",
+        "a1": "#F39C9E",
+        "a2": "#7FD6B2",
+        "a3": "#C9B7AE",
+        "outline": "#3D3532"
+      },
+      "colors": [
+        "#151410",
+        "#3D3532",
+        "#F39C9E",
+        "#F4EEEE",
+        "#F4EEEE",
+        "#3D3532",
+        "#3D3532",
+        "#F39C9E"
+      ]
+    },
+    "light": {
+      "title": "Светлый",
+      "page": {
+        "bg": "#F1ECE6",
+        "surface": "#FAF7F3",
+        "text": "#221E1B",
+        "muted": "#6E655E",
+        "a1": "#C2535E",
+        "a2": "#2F8A68",
+        "a3": "#7A6257",
+        "outline": "#CFC5BC"
+      },
+      "colors": [
+        "#F1ECE6",
+        "#DDD3CB",
+        "#EE8C93",
+        "#1F1B19",
+        "#1F1B19",
+        "#DDD3CB",
+        "#DDD3CB",
+        "#EE8C93"
+      ]
+    }
+  }
+}

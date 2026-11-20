@@ -9,7 +9,7 @@ from pathlib import Path
 
 root = Path(__file__).resolve().parents[1]
 version = json.loads((root / "plugin.json").read_text())["version"]
-files = ["plugin.json", "VesperEye.qml", "Settings.qml", "README.md", "LICENSE", "CHANGELOG.md", "skins/SkinData.js"]
+files = ["plugin.json", "VesperEye.qml", "Settings.qml", "Pult.qml", "README.md", "LICENSE", "CHANGELOG.md", "skins/SkinData.js"]
 files += [str(p.relative_to(root)) for p in sorted((root / "core").iterdir()) if p.suffix in (".qml", ".js")]
 files += [str(p.relative_to(root)) for p in sorted((root / "shaders").glob("*.frag.qsb"))]
 files = sorted(set(files))

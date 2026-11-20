@@ -37,7 +37,7 @@ Item {
     onActiveChanged: if (active && available) poll()
 
     Timer {
-        interval: root.moving ? (root.eco ? 50 : 33) : 250
+        interval: root.moving ? (root.eco ? 33 : 16) : 250
         repeat: true
         running: root.active && root.available
         onTriggered: root.poll()

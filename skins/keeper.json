@@ -1,0 +1,115 @@
+{
+  "title": "Смотритель",
+  "note": "Трафаретная печать в три краски: красный, чёрный и костяной. Светлый вариант — на бумаге, тёмный — на красном листе.",
+  "shader": "poster",
+  "irisRadius": 0.86,
+  "restLid": 0.2,
+  "motion": {
+    "omega": 22,
+    "blinkClose": 75,
+    "blinkHold": 45,
+    "blinkOpen": 150
+  },
+  "themeMap": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "variants": {
+    "light": {
+      "title": "На бумаге",
+      "page": {
+        "bg": "#E6DCC8",
+        "surface": "#F5EEE1",
+        "text": "#140A0A",
+        "muted": "#4A4038",
+        "a1": "#B3151C",
+        "a2": "#140A0A",
+        "a3": "#8F1218",
+        "outline": "#8C7F6C"
+      },
+      "colors": [
+        "#E6DCC8",
+        "#FDFAF2",
+        "#C4161C",
+        "#0A0505",
+        "#FDFAF2",
+        "#0A0505",
+        "#C4161C",
+        "#0A0505"
+      ],
+      "p1": [
+        0,
+        1,
+        0,
+        0
+      ]
+    },
+    "dark": {
+      "title": "На красном",
+      "page": {
+        "bg": "#B4151C",
+        "surface": "#120909",
+        "text": "#ECE3D2",
+        "muted": "#B5AA98",
+        "a1": "#E23A40",
+        "a2": "#ECE3D2",
+        "a3": "#8F1218",
+        "outline": "#6B4A46"
+      },
+      "colors": [
+        "#B4151C",
+        "#ECE3D2",
+        "#0A0505",
+        "#0A0505",
+        "#ECE3D2",
+        "#0A0505",
+        "#760B11",
+        "#B4151C"
+      ],
+      "p1": [
+        0,
+        0,
+        0,
+        0
+      ]
+    }
+  },
+  "shape": {
+    "type": "lens"
+  },
+  "character": {
+    "tempo": 1.0,
+    "omega": 1.0,
+    "lag": 0,
+    "blink": [
+      2600,
+      6800
+    ],
+    "blinkKind": "lid",
+    "acts": {
+      "laugh": 3,
+      "surprise": 2.5,
+      "fear": 2,
+      "angry": 2,
+      "sad": 2.5,
+      "disgust": 2,
+      "fly": 3,
+      "hunt": 2.5,
+      "contest": 2,
+      "spin": 2,
+      "roll": 2,
+      "suspect": 2,
+      "around": 2.5,
+      "dream": 2.5,
+      "yawn": 3,
+      "nod": 4,
+      "shake": 2
+    }
+  }
+}

@@ -57,7 +57,7 @@ const DATA = /*__DATA__*/null;
 const VS = `#version 300 es
 in vec2 a; out vec2 vUv;
 void main() { vUv = vec2(a.x * 0.5 + 0.5, 0.5 - a.y * 0.5); gl_Position = vec4(a, 0.0, 1.0); }`;
-const UNI = ['uTime','uSize','uUnit','uPupil','uGaze','uGaze2','uLidTop','uLidBot','uEnergy','uWake','uPulse','uDim','uPulseDir','uLight','uC0','uC1','uC2','uC3','uC4','uC5','uC6','uC7','uP0','uP1'];
+const UNI = ['uTime','uSize','uUnit','uPupil','uGaze','uGaze2','uLidTop','uLidBot','uEnergy','uWake','uPulse','uDim','uPulseDir','uLight','uC0','uC1','uC2','uC3','uC4','uC5','uC6','uC7','uP0','uP1','uMood','uFace','uPose'];
 const hex = h => { const n = parseInt(h.slice(1), 16); return [(n >> 16 & 255) / 255, (n >> 8 & 255) / 255, (n & 255) / 255, 1]; };
 function fail(msg) { document.getElementById('err').textContent += msg + '\n'; console.log('SHADER-ERROR ' + msg); }
 
@@ -100,7 +100,7 @@ function Eye(canvas, skinId, variant) {
     gl.uniform1f(loc.uPulse, f.pulse ?? eye.pulse); gl.uniform2f(loc.uPulseDir, eye.pdx, eye.pdy);
     gl.uniform1f(loc.uDim, f.dim ?? (1 - 0.5 * eye.sleep)); gl.uniform1f(loc.uLight, eye.variant === 'light' ? 1 : 0);
     v.colors.forEach((c, i) => gl.uniform4fv(loc['uC' + i], hex(c)));
-    gl.uniform4fv(loc.uP0, f.p0 || v.p0 || [0, 0, 0, 0]); gl.uniform4fv(loc.uP1, v.p1 || [0, 0, 0, 0]);
+    gl.uniform4fv(loc.uP0, f.p0 || v.p0 || [0, 0, 0, 0]); gl.uniform4fv(loc.uP1, f.p1 || v.p1 || [0, 0, 0, 0]); gl.uniform4fv(loc.uMood, f.mood || eye.mood || [0, 0, 0, 0]); gl.uniform4fv(loc.uFace, f.face || eye.face || [0, 0, 0, 0]); gl.uniform4fv(loc.uPose, f.pose || eye.pose || [0, 0, 0, 0]);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
   };
   // Упрощённая копия поведения плагина: пружина взгляда, моргание, удержание.
@@ -130,7 +130,7 @@ if (q.has('solo')) {
   document.documentElement.style.background = document.body.style.background = '#' + (q.get('bg') || '000000'); document.getElementById('err').style.padding = 0;
   const eye = Eye(cv, q.get('solo'), q.get('variant') || 'dark'); const num = k => q.has(k) ? parseFloat(q.get(k)) : undefined;
   eye.fixed = { gx: num('gx') ?? 0, gy: num('gy') ?? 0, px: num('px'), py: num('py'), lt: num('lt') ?? 0, lb: num('lb') ?? 0, pupil: num('pupil') ?? 1,
-    p0: q.has('p0') ? q.get('p0').split(',').map(Number) : undefined, wake: num('wake') ?? 0, pulse: num('pulse') ?? 0, dim: num('dim') ?? 1, energy: num('energy') ?? 0, time: num('time') ?? 0 };
+    p0: q.has('p0') ? q.get('p0').split(',').map(Number) : undefined, p1: q.has('p1') ? q.get('p1').split(',').map(Number) : undefined, mood: q.has('mood') ? q.get('mood').split(',').map(Number) : undefined, face: q.has('face') ? q.get('face').split(',').map(Number) : undefined, pose: q.has('pose') ? q.get('pose').split(',').map(Number) : undefined, wake: num('wake') ?? 0, pulse: num('pulse') ?? 0, dim: num('dim') ?? 1, energy: num('energy') ?? 0, time: num('time') ?? 0 };
   if (q.has('pdx')) { eye.pdx = num('pdx'); eye.pdy = num('pdy') ?? 0; }
   requestAnimationFrame(now => { eye.draw(now); document.title = 'READY'; });
 } else {
