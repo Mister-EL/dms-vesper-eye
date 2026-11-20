@@ -1,0 +1,103 @@
+{
+  "title": "Росток",
+  "note": "Глаз растения: веки из двух половинок стручка, вместо ресниц кончики листьев. Бодрый и любопытный.",
+  "shader": "sprout",
+  "irisRadius": 0.95,
+  "restLid": 0.08,
+  "shape": {
+    "type": "lens",
+    "w": 2.01,
+    "hu": 0.93,
+    "hl": 0.83
+  },
+  "character": {
+    "tempo": 1.2,
+    "omega": 1.25,
+    "lag": 0,
+    "blink": [
+      1800,
+      4600
+    ],
+    "blinkKind": "lid",
+    "names": {
+      "fly": "Бабочка",
+      "hunt": "Охота на курсор"
+    },
+    "acts": {
+      "laugh": 3,
+      "hello": 3,
+      "sun": 3,
+      "surprise": 2.5,
+      "fear": 2.5,
+      "fly": 3,
+      "hunt": 2.5,
+      "spin": 2,
+      "around": 2.5,
+      "sad": 1.5,
+      "angry": 1,
+      "contest": 1.5,
+      "dream": 2,
+      "yawn": 3,
+      "nod": 4,
+      "shake": 2
+    }
+  },
+  "themeMap": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "variants": {
+    "light": {
+      "title": "День",
+      "page": {
+        "bg": "#6CC23A",
+        "surface": "#FFF6D8",
+        "text": "#2B1D0E",
+        "muted": "#6B5A3C",
+        "a1": "#3F9A1B",
+        "a2": "#FFC61A",
+        "a3": "#7A4A21",
+        "outline": "#2B3A12"
+      },
+      "colors": [
+        "#8EDB3C",
+        "#FFFDF0",
+        "#FFAE17",
+        "#2A1606",
+        "#FFFFFF",
+        "#1F3D0F",
+        "#4FA51F",
+        "#FFE36A"
+      ]
+    },
+    "dark": {
+      "title": "День",
+      "page": {
+        "bg": "#6CC23A",
+        "surface": "#FFF6D8",
+        "text": "#2B1D0E",
+        "muted": "#6B5A3C",
+        "a1": "#3F9A1B",
+        "a2": "#FFC61A",
+        "a3": "#7A4A21",
+        "outline": "#2B3A12"
+      },
+      "colors": [
+        "#8EDB3C",
+        "#FFFDF0",
+        "#FFAE17",
+        "#2A1606",
+        "#FFFFFF",
+        "#1F3D0F",
+        "#4FA51F",
+        "#FFE36A"
+      ]
+    }
+  }
+}

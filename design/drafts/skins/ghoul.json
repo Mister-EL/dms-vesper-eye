@@ -1,0 +1,105 @@
+{
+  "title": "Гуль",
+  "note": "Глаз зомби: лоскут серо-зелёной кожи, тяжёлое веко, зашитые уголки, блёклая радужка. Вялый и рассеянный.",
+  "shader": "ghoul",
+  "irisRadius": 0.6,
+  "restLid": 0.32,
+  "shape": {
+    "type": "lens",
+    "w": 1.98,
+    "hu": 0.95,
+    "hl": 0.86
+  },
+  "character": {
+    "tempo": 0.62,
+    "omega": 0.42,
+    "lag": 0.38,
+    "blink": [
+      3800,
+      9500
+    ],
+    "blinkKind": "lazy",
+    "names": {
+      "laugh": "Гыгыкает",
+      "hunt": "Охота на курсор",
+      "fly": "Мотылёк",
+      "angry": "Рычит",
+      "sad": "Хнычет"
+    },
+    "acts": {
+      "drift": 4,
+      "twitch": 3,
+      "brains": 3.5,
+      "popeye": 2.5,
+      "laugh": 2,
+      "sad": 2,
+      "angry": 2,
+      "fear": 1.5,
+      "fly": 2,
+      "contest": 2.5,
+      "suspect": 2,
+      "dream": 2.5,
+      "yawn": 3.5,
+      "nod": 4,
+      "shake": 1.5
+    }
+  },
+  "themeMap": [
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "",
+    ""
+  ],
+  "variants": {
+    "dark": {
+      "title": "Ночь",
+      "page": {
+        "bg": "#272463",
+        "surface": "#1B1638",
+        "text": "#EDE6FF",
+        "muted": "#A79FCB",
+        "a1": "#9BE34A",
+        "a2": "#B79BFF",
+        "a3": "#FF9A3D",
+        "outline": "#3C3570"
+      },
+      "colors": [
+        "#A3B592",
+        "#F3EDB8",
+        "#BFE05A",
+        "#16101F",
+        "#DCEBFF",
+        "#2A2036",
+        "#6C6A8E",
+        "#C9566C"
+      ]
+    },
+    "light": {
+      "title": "Ночь",
+      "page": {
+        "bg": "#272463",
+        "surface": "#1B1638",
+        "text": "#EDE6FF",
+        "muted": "#A79FCB",
+        "a1": "#9BE34A",
+        "a2": "#B79BFF",
+        "a3": "#FF9A3D",
+        "outline": "#3C3570"
+      },
+      "colors": [
+        "#A3B592",
+        "#F3EDB8",
+        "#BFE05A",
+        "#16101F",
+        "#DCEBFF",
+        "#2A2036",
+        "#6C6A8E",
+        "#C9566C"
+      ]
+    }
+  }
+}
